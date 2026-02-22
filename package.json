@@ -1,0 +1,51 @@
+{
+  "name": "@dilgerma/embuilder",
+  "version": "0.1.9",
+  "description": "Event-model driven development toolkit for Claude Code",
+  "type": "module",
+  "bin": {
+    "embuilder": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/cli.js",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "event-model",
+    "code-generation",
+    "ddd",
+    "event-sourcing",
+    "event-driven",
+    "cqrs",
+    "yeoman-generator"
+  ],
+  "files": [
+    "dist",
+    "skills",
+    "templates",
+    "generators",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dilgerma/embuilder.git"
+  },
+  "author": "Martin Dilger",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
