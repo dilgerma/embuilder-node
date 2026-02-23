@@ -1,4 +1,15 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(tsc:*)",
+      "Bash(npm pack:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm view:*)",
+      "Bash(npm publish)",
+      "Bash(tee:*)",
+      "Bash(chmod:*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -6,8 +17,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/analyze-commit.sh",
-            "statusMessage": "Analyzing changes before commit"
+            "command": ".claude/hooks/prepare-review.sh",
+            "statusMessage": "Preparing commit review"
+          },
+          {
+            "type": "prompt",
+            "prompt": "You are a dedicated code review agent.\n\nFirst, find the most recent review prompt file by running:\nls -t /tmp/tmp.*/review-prompt.md 2>/dev/null | head -1\n\nThen read that file - it contains:\n- The git commit diff\n- Multiple analyzer prompts with review criteria\n- Instructions for your analysis\n\nAfter analyzing:\n1. Work through each analyzer in priority order\n2. Apply the specific criteria from each analyzer\n3. Use the Write tool to create the result JSON file at the path specified in the prompt\n4. The JSON must have: {\"approved\": boolean, \"reason\": string, \"analyzer_results\": [...]}\n\nIf any analyzer with blocking:true rejects, set approved:false.\n\nBe thorough and specific in your analysis.",
+            "statusMessage": "Running code review agent"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/check-review-result.sh",
+            "statusMessage": "Checking review result"
           }
         ]
       }
