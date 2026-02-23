@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, mkdirSync, symlinkSync, unlinkSync, copyFileSync, chmodSync, cpSync } from 'fs';
+import { existsSync, mkdirSync, copyFileSync, chmodSync, cpSync, rmSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,16 +33,16 @@ program
     // Get the skills directory from the package
     const skillsSource = join(__dirname, '..', 'skills');
 
-    // Remove existing symlink/directory if it exists
+    // Remove existing directory if it exists
     if (existsSync(SKILLS_DIR)) {
       console.log('  Removing existing installation...');
-      unlinkSync(SKILLS_DIR);
+      rmSync(SKILLS_DIR, { recursive: true, force: true });
     }
 
-    // Create symlink
+    // Copy skills directory
     try {
-      symlinkSync(skillsSource, SKILLS_DIR, 'dir');
-      console.log(`✅ Skills installed to: ${SKILLS_DIR}`);
+      cpSync(skillsSource, SKILLS_DIR, { recursive: true });
+      console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
       console.log('\nAvailable commands:');
       console.log('\n  Event Model Slices:');
       console.log('  /automation-slice   - Generate automation slice from event model');
@@ -111,7 +111,7 @@ program
   .description('Remove event-model skills from Claude Code')
   .action(() => {
     if (existsSync(SKILLS_DIR)) {
-      unlinkSync(SKILLS_DIR);
+      rmSync(SKILLS_DIR, { recursive: true, force: true });
       console.log('✅ EMBuilder skills uninstalled');
     } else {
       console.log('ℹ️  Skills not currently installed');
