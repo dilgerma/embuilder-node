@@ -30,8 +30,8 @@ program
       mkdirSync(baseSkillsDir, { recursive: true });
     }
 
-    // Get the skills directory from the package
-    const skillsSource = join(__dirname, '..', 'skills');
+    // Get the skills directory from templates
+    const skillsSource = join(__dirname, '..', 'templates', '.claude', 'skills');
 
     // Remove existing directory if it exists
     if (existsSync(SKILLS_DIR)) {
@@ -39,10 +39,14 @@ program
       rmSync(SKILLS_DIR, { recursive: true, force: true });
     }
 
-    // Copy skills directory
+    // Copy skills directory from templates
     try {
-      cpSync(skillsSource, SKILLS_DIR, { recursive: true });
-      console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
+      if (existsSync(skillsSource)) {
+        cpSync(skillsSource, SKILLS_DIR, { recursive: true });
+        console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
+      } else {
+        throw new Error(`Skills directory not found at: ${skillsSource}`);
+      }
       console.log('\nAvailable commands:');
       console.log('\n  Event Model Slices:');
       console.log('  /automation-slice   - Generate automation slice from event model');
