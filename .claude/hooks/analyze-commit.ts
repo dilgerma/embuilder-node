@@ -354,6 +354,79 @@ echo '{"approved": boolean, "reason": "string", "analyzer_results": [{"analyzer"
   }
 }
 
+async function recordReviewFailure(reviewResult: ReviewResult, hookData: HookData): Promise<void> {
+  try {
+    const { appendFileSync, existsSync } = await import('fs');
+    const { join } = await import('path');
+
+    const progressFile = join(process.cwd(), 'progress.txt');
+
+    // Create progress.txt if it doesn't exist
+    if (!existsSync(progressFile)) {
+      const { writeFileSync } = await import('fs');
+      writeFileSync(progressFile, '# Event Model Development Progress Log\n');
+      writeFileSync(progressFile, `Started: ${new Date().toISOString()}\n`, { flag: 'a' });
+      writeFileSync(progressFile, '---\n\n', { flag: 'a' });
+    }
+
+    // Build detailed failure report
+    const failureReport = `
+## ❌ COMMIT REVIEW FAILED - ${new Date().toISOString()}
+
+**Branch:** ${hookData.branch}
+**Files Changed:** ${hookData.changed_files.length}
+${hookData.current_slice ? `**Current Slice:** ${hookData.current_slice.slice} (${hookData.current_slice.folder})` : ''}
+
+**Reason:** ${reviewResult.reason}
+
+### Detailed Analyzer Results:
+
+${reviewResult.analyzer_results.map(result => `
+#### ${result.approved ? '✅' : '❌'} ${result.analyzer}
+${result.details.map(d => `- ${d}`).join('\n')}
+`).join('\n')}
+
+### Changed Files:
+${hookData.changed_files.map(f => `- ${f}`).join('\n')}
+
+### Action Taken:
+- All changes discarded (git reset --hard)
+- Development loop stopped
+- Please review the failures above before restarting
+
+---
+
+`;
+
+    appendFileSync(progressFile, failureReport);
+    console.log(`   ✓ Failure recorded to progress.txt`);
+
+  } catch (error: any) {
+    console.error(`   ⚠️  Could not record to progress.txt: ${error.message}`);
+  }
+}
+
+async function discardChanges(): Promise<void> {
+  try {
+    console.log('   🗑️  Discarding all changes...');
+
+    // Reset staged changes
+    execSync('git reset HEAD .', { encoding: 'utf-8' });
+
+    // Discard working directory changes
+    execSync('git checkout -- .', { encoding: 'utf-8' });
+
+    // Clean untracked files
+    execSync('git clean -fd', { encoding: 'utf-8' });
+
+    console.log('   ✓ All changes discarded');
+
+  } catch (error: any) {
+    console.error(`   ⚠️  Error discarding changes: ${error.message}`);
+    console.error('   Please manually run: git reset --hard HEAD');
+  }
+}
+
 async function main() {
   try {
     console.log('🔍 Analyzing commit with AI-powered reviewers...\n');
@@ -421,7 +494,16 @@ async function main() {
     } else {
       console.log('❌ Commit REJECTED');
       console.log(`   ${reviewResult.reason}\n`);
-      console.log('💡 Fix the issues above and try again\n');
+      console.log('💡 Recording failure and resetting workspace...\n');
+
+      // Record detailed failure to progress.txt
+      await recordReviewFailure(reviewResult, hookData);
+
+      // Discard all changes (git reset)
+      await discardChanges();
+
+      // Exit with error - Ralph will detect this and continue to next iteration
+      console.log('🔄 Ralph will continue to next iteration\n');
       process.exit(1);
     }
 

@@ -76,6 +76,20 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     continue  # retry
   fi
 
+  # ---- Check for commit review failure -------------------
+  if echo "$OUTPUT" | grep -q "❌ COMMIT REVIEW FAILED"; then
+    echo
+    echo "⚠️  Commit review failed - workspace has been reset"
+    echo "📄 Review failure details recorded in progress.txt"
+    echo "🔄 Continuing to next iteration..."
+    echo
+    echo "Review failed at iteration $i - continuing loop" >> "$PROGRESS_FILE"
+    echo "Continuing: $(date)" >> "$PROGRESS_FILE"
+    echo "---" >> "$PROGRESS_FILE"
+    sleep 5  # Brief pause before continuing
+    continue  # Continue to next iteration
+  fi
+
   # ---- Completion check -----------------------------------
   if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then
     echo
