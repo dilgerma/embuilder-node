@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, mkdirSync, symlinkSync, unlinkSync, copyFileSync, chmodSync } from 'fs';
+import { existsSync, mkdirSync, symlinkSync, unlinkSync, copyFileSync, chmodSync, cpSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,7 +20,7 @@ program
 program
   .command('install')
   .description('Install event-model skills into Claude Code')
-  .option('--with-templates', 'Also copy template files (ralph.sh, AGENTS.md, Claude.md, prompt.md) to current directory')
+  .option('--with-templates', 'Also copy template files (ralph.sh, AGENTS.md, Claude.md, prompt.md, README.md) and generators to current directory')
   .action((options) => {
     console.log('📦 Installing EMBuilder skills...\n');
 
@@ -63,7 +63,7 @@ program
         const templatesSource = join(__dirname, '..', 'templates');
         const targetDir = process.cwd();
 
-        const files = ['ralph.sh', 'AGENTS.md', 'Claude.md', 'prompt.md'];
+        const files = ['ralph.sh', 'AGENTS.md', 'Claude.md', 'prompt.md', 'README.md'];
         files.forEach(file => {
           const source = join(templatesSource, file);
           const target = join(targetDir, file);
@@ -79,12 +79,24 @@ program
           }
         });
 
+        // Copy generators directory
+        console.log('\n📦 Copying generators to current directory...');
+        const generatorsSource = join(__dirname, '..', 'generators');
+        const generatorsTarget = join(targetDir, 'generators');
+
+        if (existsSync(generatorsSource)) {
+          cpSync(generatorsSource, generatorsTarget, { recursive: true });
+          console.log('  ✓ generators/');
+        }
+
         console.log('\n📝 Template files copied! You can now:');
+        console.log('  - Read README.md for detailed usage instructions');
         console.log('  - Edit Claude.md with project-specific settings');
         console.log('  - Run ./ralph.sh for automated development loops');
         console.log('  - Track learnings in AGENTS.md');
+        console.log('  - Use generators/ for Yeoman-based code generation');
       } else {
-        console.log('\n💡 Tip: Run with --with-templates to copy ralph.sh, AGENTS.md, Claude.md, and prompt.md');
+        console.log('\n💡 Tip: Run with --with-templates to copy template files, README.md, and generators');
       }
 
       console.log('\n🎉 Installation complete!');
