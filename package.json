@@ -1,6 +1,6 @@
 {
   "name": "@dilgerma/embuilder",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Event-model driven development toolkit for Claude Code",
   "type": "module",
   "bin": {
