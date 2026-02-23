@@ -17,9 +17,9 @@ You are tasked with generating a skeleton application using the emmet-supabase Y
 
 2. Ask the user for the application name
 
-3. Run the generator:
+3. Run the local generator directly:
    ```bash
-   npx yo emmet-supabase --action skeleton --app-name <app-name>
+   npx yo ./.claude/skills/gen-skeleton/generators/emmet-supabase --action skeleton --app-name <app-name>
    ```
 
 4. After generation completes:
@@ -28,6 +28,7 @@ You are tasked with generating a skeleton application using the emmet-supabase Y
 
 ## Important Notes
 
+- The generator is located in `.claude/skills/gen-skeleton/generators/emmet-supabase`
 - The generator requires Yeoman, but npx will handle installation automatically
 - The config.json file should exist in the current directory
 - Use non-interactive mode with command-line flags for automation

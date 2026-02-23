@@ -17,9 +17,9 @@ You are tasked with setting up a modern React UI project using the emmet-supabas
    - Suggest a default like "ui" or "frontend"
    - Check if the directory already exists
 
-2. Copy the template to the target directory:
+2. Copy the local template to the target directory:
    ```bash
-   cp -r generators/emmet-supabase-ui <target-directory>
+   cp -r .claude/skills/gen-ui/generators/emmet-supabase-ui <target-directory>
    ```
 
 3. Navigate to the new directory and install dependencies:
@@ -50,4 +50,4 @@ You are tasked with setting up a modern React UI project using the emmet-supabas
   - React Query for data fetching
   - Full suite of pre-configured UI components
 - The `.env.development` file needs Supabase credentials
-- Template is located at `generators/emmet-supabase-ui/`
+- Template is located at `.claude/skills/gen-ui/generators/emmet-supabase-ui/`

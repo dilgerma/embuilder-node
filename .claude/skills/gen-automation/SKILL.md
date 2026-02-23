@@ -25,9 +25,9 @@ You are tasked with generating one or more automation slices using the emmet-sup
    - Allow multiple selections
    - Or accept slice IDs from the user's original request
 
-4. Run the generator with selected slices:
+4. Run the local generator with selected slices:
    ```bash
-   npx yo emmet-supabase --action AUTOMATION --slices <slice-id-1>,<slice-id-2>
+   npx yo ./.claude/skills/gen-skeleton/generators/emmet-supabase --action AUTOMATION --slices <slice-id-1>,<slice-id-2>
    ```
 
 5. After generation completes:
@@ -38,6 +38,7 @@ You are tasked with generating one or more automation slices using the emmet-sup
 
 ## Important Notes
 
+- The generator is located in `.claude/skills/gen-skeleton/generators/emmet-supabase`
 - Multiple slices can be generated in one command (comma-separated)
 - Slice IDs must exactly match those in config.json
 - Generated files typically include:

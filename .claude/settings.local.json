@@ -8,7 +8,12 @@
       "Bash(npm pack:*)",
       "Bash(npm publish:*)",
       "Bash(npm pkg:*)",
-      "Bash(./install.sh)"
+      "Bash(./install.sh)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nBump version to 0.1.10\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)"
     ]
   }
 }
