@@ -211,8 +211,28 @@ When you use `--with-templates`, you get:
 - **`AGENTS.md`** - Track learnings and patterns from development
 - **`Claude.md`** - Project-specific configuration for Claude Code
 - **`prompt.md`** - Agent instructions for automated development
+- **`.claude/hooks/`** - Pre-commit hooks that analyze git diffs before commits
+  - Includes built-in analyzers for code quality and event model validation
+  - Extensible with custom TypeScript analyzers
 
 These files enable the full event-model driven development workflow with autonomous agents.
+
+### Git Commit Hooks
+
+The template includes a pre-commit hook system that automatically analyzes changes before commits:
+
+**Built-in Analyzers:**
+- **Code Quality Checker** - Detects console.log, debugger statements, TODOs, and potential secrets
+- **Event Model Validator** - Ensures event naming conventions and slice structure
+- **Logger** - Displays commit statistics and changed files
+
+**Features:**
+- Written in TypeScript for type safety
+- Extensible - add your own analyzers
+- Non-blocking by default
+- Integrates seamlessly with Claude Code
+
+See `.claude/hooks/README.md` for full documentation on creating custom analyzers.
 
 ## Philosophy
 

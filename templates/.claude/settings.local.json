@@ -1,15 +1,4 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(tsc:*)",
-      "Bash(npm pack:*)",
-      "Bash(npm run build:*)",
-      "Bash(npm view:*)",
-      "Bash(npm publish)",
-      "Bash(tee:*)",
-      "Bash(chmod:*)"
-    ]
-  },
   "hooks": {
     "PreToolUse": [
       {
