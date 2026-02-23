@@ -2,6 +2,7 @@
 
 # Prepare Review - Step 1 of 3 in commit review process
 # Generates the review prompt and sets up file paths for the review agent
+echo "Preparing Review"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 

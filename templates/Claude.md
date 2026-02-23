@@ -1,107 +1,58 @@
 # Project Configuration
 
-This file contains project-specific instructions for Claude Code.
+Read Events in src/events to understand the global structure.
 
-## Event Model Structure
+## Framework & Styling
 
-Read event models (JSON files) to understand the domain structure.
+- **CSS Framework**: Use Bulma CSS exclusively for all styling
+- **Assumption**: Bulma CSS is already available and imported in the project
+- **Styling Guidelines**:
+    - Use Bulma's utility classes and components
+    - Follow Bulma's naming conventions and class structure
+    - Leverage Bulma's responsive design features
+    - Prefer Bulma components over custom CSS
 
-Event models typically define:
-- **Commands**: Actions that can be performed
-- **Events**: Facts that happened
-- **Aggregates**: Domain entities that commands act upon
-- **Read Models**: Query-optimized views
-- **Processors**: Background automations
+## File Structure Constraints
 
-## Framework & Technology Stack
+- **Strict Path Limitation**: if not instructed otherwise, only check `src/slices/{slicename}/*.ts`
+- **Slice Organization**: Each feature/domain should be organized as a separate slice
+
+## Code Standards
 
 - **Language**: TypeScript only
 - **Module System**: Use ES modules (import/export)
 - **Type Safety**: Ensure all code is properly typed
-- **Testing**: Use node:test with given/when/then pattern
-
-## File Structure Constraints
-
-- **Slice Organization**: Each feature/domain should be organized as a separate slice
-- **Path Convention**: `src/slices/{SliceName}/`
-- Each slice should be self-contained and focused on a specific domain
-
-## Code Standards
-
-### Naming Conventions
-- Files: PascalCase for slice files (e.g., `RegisterClerk.ts`)
-- Variables: camelCase
-- Types: PascalCase
-- Constants: UPPER_SNAKE_CASE
-
-### Module Organization
-```
-src/slices/{SliceName}/
-├── {SliceName}Command.ts  # State-change logic (if applicable)
-├── {SliceName}Projection.ts # State-view logic (if applicable)
-├── processor.ts            # Automation logic (if applicable)
-├── routes.ts               # HTTP API endpoints
-├── {SliceName}.test.ts     # Tests
-└── ui/                     # UI components (optional)
-```
 
 ## Development Guidelines
 
 1. Each slice should be self-contained and focused on a specific domain
-2. Maintain clear separation of concerns within each slice
-3. Follow TypeScript best practices for type definitions and interfaces
-4. Write tests for all business logic
-5. Document complex business rules
+2. Use Bulma's grid system, components, and utilities for all UI-related code
+3. Maintain clear separation of concerns within each slice
+4. Follow TypeScript best practices for type definitions and interfaces
 
-## Event Sourcing Patterns
+Only check src/slices/{slice}/*.ts, do not check subfolders, if not explicitely tasked to build the UI.
+If not tasked explicitely to change routes, ignore routes*.ts
 
-### Commands (State-Change)
-- Commands express intent: "RegisterClerk", "ActivateShift"
-- Validate in `decide()` function
-- Reconstruct state in `evolve()` function
-- Emit events as results
+Ignore case for files and slices in prompts. "CartItems" slice is the same as "cartitemsrun t"
 
-### Events
-- Events are facts: "ClerkRegistered", "ShiftActivated"
-- Use past tense
-- Include all data needed to reconstruct state
-- Events are immutable
+Do not change files with tests unless explicitely instructed: *.test.ts
 
-### Read Models (State-View)
-- Build from events in projections
-- Optimize for queries
-- Can be rebuilt from event stream
+After you are done, automatically run the tests for the slice that was edited.
 
-### Automations
-- Run on CRON schedules
-- Read from TODO lists (work queues)
-- Fire commands automatically
-- Handle errors gracefully
+## Example Slice Structure
 
-## Testing Guidelines
-
-### Test Pattern
-Use given/when/then pattern:
-```typescript
-given([/* precondition events */])
-  .when(command)
-  .then([/* expected events */])
+```
+src/slices/
+├── {slice-name}/
+│   ├── CommandHandler.ts
+│   ├── ui/
+│   └── routes.ts
 ```
 
-### Test Coverage
-- Happy path scenarios
-- Error cases
-- Edge cases
-- Business rule validations
+## Bulma Integration Notes
 
-## After Completing Work
-
-After you are done implementing a slice:
-1. **Run tests**: Ensure all tests pass
-2. **Run build**: Ensure TypeScript compiles
-3. **Update AGENTS.md**: Add learnings for future iterations
-4. **Update progress.txt**: Document what was done
-
-## Additional Notes
-
-Add project-specific guidelines, conventions, and patterns here as your project evolves.
+- Utilize Bulma's component library: navbar, cards, buttons, forms, modals, etc.
+- Apply Bulma's spacing utilities: `m-*`, `p-*`, `has-text-*`, `has-background-*`
+- Use Bulma's flexbox utilities for layouts
+- Implement responsive design with Bulma's breakpoint classes
+- Leverage Bulma's color palette and typography classes

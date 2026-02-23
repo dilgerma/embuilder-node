@@ -1,7 +1,7 @@
 [
   {
     "id": "3458764595831815141",
-    "status": "Done",
+    "status": "Planned",
     "index": 1,
     "title": "slice: add item",
     "context": "Cart",
@@ -981,7 +981,7 @@
   },
   {
     "id": "3458764595831815463",
-    "status": "Done",
+    "status": "Planned",
     "index": 2,
     "title": "slice: remove item",
     "context": "Cart",
@@ -1542,7 +1542,7 @@
   },
   {
     "id": "3458764595831815528",
-    "status": "Done",
+    "status": "Planned",
     "index": 3,
     "title": "slice: cart items",
     "context": "Cart",
@@ -2615,7 +2615,7 @@
   },
   {
     "id": "3458764595935790438",
-    "status": "Done",
+    "status": "Planned",
     "index": 4,
     "title": "slice: clear cart",
     "context": "Cart",
@@ -2974,7 +2974,7 @@
   },
   {
     "id": "3458764596700878567",
-    "status": "Done",
+    "status": "Planned",
     "index": 5,
     "title": "slice: change inventory",
     "context": "Cart",
@@ -3239,7 +3239,7 @@
   },
   {
     "id": "3458764596700878694",
-    "status": "Done",
+    "status": "Planned",
     "index": 6,
     "title": "slice: Inventories",
     "context": "Cart",
@@ -3443,7 +3443,7 @@
   },
   {
     "id": "3458764596700962283",
-    "status": "Done",
+    "status": "Planned",
     "index": 7,
     "title": "slice: change price",
     "context": "Cart",
@@ -3752,7 +3752,7 @@
   },
   {
     "id": "3458764597396562122",
-    "status": "Done",
+    "status": "Planned",
     "index": 8,
     "title": "slice: cart with products",
     "context": "Cart",
@@ -4236,7 +4236,7 @@
   },
   {
     "id": "3458764596700962479",
-    "status": "Done",
+    "status": "Planned",
     "index": 10,
     "title": "slice: Archive Item",
     "context": "Cart",
@@ -4766,7 +4766,7 @@
   },
   {
     "id": "3458764596110806982",
-    "status": "Done",
+    "status": "Planned",
     "index": 11,
     "title": "slice: submit cart",
     "context": "Cart",
@@ -5475,7 +5475,7 @@
   },
   {
     "id": "3458764596112606680",
-    "status": "Done",
+    "status": "Planned",
     "index": 12,
     "title": "slice: submitted cart data",
     "context": "Cart",
@@ -5875,7 +5875,7 @@
   },
   {
     "id": "3458764596112734544",
-    "status": "Done",
+    "status": "Planned",
     "index": 13,
     "title": "slice: publish cart",
     "context": "Cart",

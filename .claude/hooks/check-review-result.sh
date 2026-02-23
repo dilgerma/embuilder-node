@@ -3,6 +3,8 @@
 # Check Review Result - Step 3 of 3 in commit review process
 # Reads the review result and approves/rejects the commit
 
+echo "Checking Review"
+
 # Find the temp directory from the last prepare-review run
 # We need to look for recent temp directories
 LATEST_TEMP=$(find /tmp -maxdepth 1 -name "tmp.*" -type d -newer /tmp -print 2>/dev/null | head -1)

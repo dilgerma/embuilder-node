@@ -15,8 +15,7 @@ This framework helps you build event-sourced applications using event modeling. 
 2. Model your domain in an event modeling tool (like Miro)
 3. Export your model as config.json
 4. Generate skeleton application
-5. Use Ralph to auto-implement slices
-6. Run your application
+5. Run your application
 
 Let me guide you through each step:
 
@@ -127,12 +126,6 @@ After generation:
 npm install            # Install dependencies
 npm run build          # Verify TypeScript compiles
 ```
-
----
-
-## Step 4: Generate Your Slices
-
-Now generate the actual business logic from your event model.
 
 ### Generate State Change Slices (Commands)
 
