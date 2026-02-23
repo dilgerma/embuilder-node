@@ -22,45 +22,9 @@ program
   .description('Install event-model skills into Claude Code')
   .option('--with-templates', 'Also copy template files (ralph.sh, AGENTS.md, Claude.md, prompt.md, README.md) and generators to current directory')
   .action((options) => {
-    console.log('📦 Installing EMBuilder skills...\n');
+    console.log('📦 Installing EMBuilder...\n');
 
-    // Ensure .claude/skills directory exists
-    const baseSkillsDir = dirname(SKILLS_DIR);
-    if (!existsSync(baseSkillsDir)) {
-      mkdirSync(baseSkillsDir, { recursive: true });
-    }
-
-    // Get the skills directory from templates
-    const skillsSource = join(__dirname, '..', 'templates', '.claude', 'skills');
-
-    // Remove existing directory if it exists
-    if (existsSync(SKILLS_DIR)) {
-      console.log('  Removing existing installation...');
-      rmSync(SKILLS_DIR, { recursive: true, force: true });
-    }
-
-    // Copy skills directory from templates
     try {
-      if (existsSync(skillsSource)) {
-        cpSync(skillsSource, SKILLS_DIR, { recursive: true });
-        console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
-      } else {
-        throw new Error(`Skills directory not found at: ${skillsSource}`);
-      }
-      console.log('\nAvailable commands:');
-      console.log('\n  Event Model Slices:');
-      console.log('  /automation-slice   - Generate automation slice from event model');
-      console.log('  /state-change-slice - Generate state-change slice from event model');
-      console.log('  /state-view-slice   - Generate state-view slice from event model');
-      console.log('\n  Configuration:');
-      console.log('  /fetch-config       - Fetch config.json from event model app');
-      console.log('\n  Yeoman Generators:');
-      console.log('  /gen-skeleton       - Generate Supabase backend skeleton app');
-      console.log('  /gen-state-change   - Generate state change slices from config.json');
-      console.log('  /gen-state-view     - Generate state view slices from config.json');
-      console.log('  /gen-automation     - Generate automation slices from config.json');
-      console.log('  /gen-ui             - Set up React UI with shadcn/ui and Supabase');
-
       // Copy template files if requested
       if (options.withTemplates) {
         console.log('\n📄 Copying all templates to current directory...');
@@ -95,11 +59,52 @@ program
         console.log('  - Run ./ralph.sh for automated development loops');
         console.log('  - Track learnings in AGENTS.md');
         console.log('  - Use skills in .claude/skills/ for code generation');
-      } else {
-        console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
-      }
 
-      console.log('\n🎉 Installation complete!');
+        console.log('\n✅ Installation complete with templates!');
+      } else {
+        // Just copy skills without templates
+        console.log('📄 Installing skills only...');
+
+        // Ensure .claude/skills directory exists
+        const baseSkillsDir = dirname(SKILLS_DIR);
+        if (!existsSync(baseSkillsDir)) {
+          mkdirSync(baseSkillsDir, { recursive: true });
+        }
+
+        // Get the skills directory from templates
+        const skillsSource = join(__dirname, '..', 'templates', '.claude', 'skills');
+
+        // Remove existing directory if it exists
+        if (existsSync(SKILLS_DIR)) {
+          console.log('  Removing existing installation...');
+          rmSync(SKILLS_DIR, { recursive: true, force: true });
+        }
+
+        // Copy skills directory from templates
+        if (existsSync(skillsSource)) {
+          cpSync(skillsSource, SKILLS_DIR, { recursive: true });
+          console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
+        } else {
+          throw new Error(`Skills directory not found at: ${skillsSource}`);
+        }
+
+        console.log('\nAvailable commands:');
+        console.log('\n  Event Model Slices:');
+        console.log('  /automation-slice   - Generate automation slice from event model');
+        console.log('  /state-change-slice - Generate state-change slice from event model');
+        console.log('  /state-view-slice   - Generate state-view slice from event model');
+        console.log('\n  Configuration:');
+        console.log('  /fetch-config       - Fetch config.json from event model app');
+        console.log('\n  Yeoman Generators:');
+        console.log('  /gen-skeleton       - Generate Supabase backend skeleton app');
+        console.log('  /gen-state-change   - Generate state change slices from config.json');
+        console.log('  /gen-state-view     - Generate state view slices from config.json');
+        console.log('  /gen-automation     - Generate automation slices from config.json');
+        console.log('  /gen-ui             - Set up React UI with shadcn/ui and Supabase');
+
+        console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
+        console.log('\n✅ Installation complete!');
+      }
     } catch (error) {
       console.error('❌ Installation failed:', error);
       process.exit(1);
