@@ -47,10 +47,10 @@ You are tasked with starting a temporary HTTP server that accepts a config.json 
 
 ## Implementation
 
-Use the provided server script located at `.claude/skills/embuilder/fetch-config/receive-config.js`:
+Use the provided server script located at `.claude/skills/fetch-config/receive-config.js`:
 
 ```bash
-node .claude/skills/embuilder/fetch-config/receive-config.js
+node .claude/skills/fetch-config/receive-config.js
 ```
 
 The server script will:
@@ -61,7 +61,7 @@ The server script will:
 
 You can also run it directly if it's executable:
 ```bash
-.claude/skills/embuilder/fetch-config/receive-config.js
+.claude/skills/fetch-config/receive-config.js
 ```
 
 ## Important Notes

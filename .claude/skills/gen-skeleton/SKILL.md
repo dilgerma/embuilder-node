@@ -13,11 +13,9 @@ You are tasked with generating a skeleton application using the emmet-supabase Y
 
 ## Steps
 
-1. Check if a `config.json` file exists in the current directory
-   - If not found, inform the user they need a config.json file
-   - Ask if they want you to create a basic config.json template
+1. don´t read the config.json file
 
-2. Ask the user for the application name (or use default from config.json)
+2. Ask the user for the application name
 
 3. Run the generator:
    ```bash

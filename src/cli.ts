@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const program = new Command();
 
-const SKILLS_DIR = join(process.cwd(), '.claude', 'skills', 'embuilder');
+const SKILLS_DIR = join(process.cwd(), '.claude', 'skills');
 
 program
   .name('embuilder')
