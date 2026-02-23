@@ -59,44 +59,40 @@ program
 
       // Copy template files if requested
       if (options.withTemplates) {
-        console.log('\n📄 Copying template files to current directory...');
+        console.log('\n📄 Copying all templates to current directory...');
         const templatesSource = join(__dirname, '..', 'templates');
         const targetDir = process.cwd();
 
-        const files = ['ralph.sh', 'AGENTS.md', 'Claude.md', 'prompt.md', 'README.md'];
-        files.forEach(file => {
-          const source = join(templatesSource, file);
-          const target = join(targetDir, file);
-
-          if (existsSync(source)) {
-            copyFileSync(source, target);
-            console.log(`  ✓ ${file}`);
-
-            // Make ralph.sh executable
-            if (file === 'ralph.sh') {
-              chmodSync(target, 0o755);
+        if (existsSync(templatesSource)) {
+          // Copy everything from templates/ to current directory
+          cpSync(templatesSource, targetDir, {
+            recursive: true,
+            filter: (source) => {
+              // Don't copy node_modules if they exist in templates
+              return !source.includes('node_modules');
             }
+          });
+
+          // Make ralph.sh executable if it exists
+          const ralphPath = join(targetDir, 'ralph.sh');
+          if (existsSync(ralphPath)) {
+            chmodSync(ralphPath, 0o755);
           }
-        });
 
-        // Copy generators directory
-        console.log('\n📦 Copying generators to current directory...');
-        const generatorsSource = join(__dirname, '..', 'generators');
-        const generatorsTarget = join(targetDir, 'generators');
-
-        if (existsSync(generatorsSource)) {
-          cpSync(generatorsSource, generatorsTarget, { recursive: true });
-          console.log('  ✓ generators/');
+          console.log('  ✓ All template files and directories copied');
+          console.log('    - README.md, Claude.md, AGENTS.md, prompt.md, ralph.sh');
+          console.log('    - .claude/ directory with skills and generators');
+          console.log('    - All other template contents');
         }
 
-        console.log('\n📝 Template files copied! You can now:');
+        console.log('\n📝 Templates copied! You can now:');
         console.log('  - Read README.md for detailed usage instructions');
         console.log('  - Edit Claude.md with project-specific settings');
         console.log('  - Run ./ralph.sh for automated development loops');
         console.log('  - Track learnings in AGENTS.md');
-        console.log('  - Use generators/ for Yeoman-based code generation');
+        console.log('  - Use skills in .claude/skills/ for code generation');
       } else {
-        console.log('\n💡 Tip: Run with --with-templates to copy template files, README.md, and generators');
+        console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
       }
 
       console.log('\n🎉 Installation complete!');
