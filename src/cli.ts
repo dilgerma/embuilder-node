@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, mkdirSync, copyFileSync, chmodSync, cpSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, copyFileSync, chmodSync, cpSync, rmSync, readdirSync, statSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,7 +15,7 @@ const SKILLS_DIR = join(process.cwd(), '.claude', 'skills');
 program
   .name('embuilder')
   .description('EMBuilder - Event-Model driven development toolkit for Claude Code')
-  .version('0.1.7');
+  .version('0.1.22');
 
 program
   .command('install')
@@ -31,27 +31,87 @@ program
         const templatesSource = join(__dirname, '..', 'templates');
         const targetDir = process.cwd();
 
-        if (existsSync(templatesSource)) {
-          // Copy everything from templates/ to current directory
-          cpSync(templatesSource, targetDir, {
-            recursive: true,
-            filter: (source) => {
-              // Don't copy node_modules if they exist in templates
-              return !source.includes('node_modules');
-            }
-          });
-
-          // Make ralph.sh executable if it exists
-          const ralphPath = join(targetDir, 'ralph.sh');
-          if (existsSync(ralphPath)) {
-            chmodSync(ralphPath, 0o755);
-          }
-
-          console.log('  ✓ All template files and directories copied');
-          console.log('    - README.md, Claude.md, AGENTS.md, prompt.md, ralph.sh');
-          console.log('    - .claude/ directory with skills and generators');
-          console.log('    - All other template contents');
+        if (!existsSync(templatesSource)) {
+          console.error('❌ Templates directory not found!');
+          console.error(`   Expected location: ${templatesSource}`);
+          console.error(`   Package location: ${__dirname}`);
+          console.error('');
+          console.error('This might be caused by:');
+          console.error('  1. Old cached version - try: npx --yes @dilgerma/embuilder@latest install --with-templates');
+          console.error('  2. Package not published correctly - reinstall with: npm install -g @dilgerma/embuilder@latest');
+          console.error('');
+          console.error('If the problem persists, please report at:');
+          console.error('  https://github.com/dilgerma/embuilder/issues');
+          process.exit(1);
         }
+
+        // Copy everything from templates/ to current directory
+        try {
+          // Read all items in templates directory and copy each one
+          // We copy items individually instead of the entire directory to have better control
+          const items = readdirSync(templatesSource);
+
+          for (const item of items) {
+            const sourcePath = join(templatesSource, item);
+            const targetPath = join(targetDir, item);
+
+            // Skip node_modules if present
+            if (item === 'node_modules') {
+              continue;
+            }
+
+            try {
+              const stat = statSync(sourcePath);
+
+              if (stat.isDirectory()) {
+                // For directories, copy with filter to skip node_modules
+                cpSync(sourcePath, targetPath, {
+                  recursive: true,
+                  filter: (source) => {
+                    // Get the relative path from the source directory to avoid matching
+                    // 'node_modules' in the npx cache path itself
+                    const relativePath = source.replace(sourcePath, '');
+                    return !relativePath.includes('node_modules');
+                  }
+                });
+              } else {
+                // For files, copy directly
+                cpSync(sourcePath, targetPath);
+              }
+            } catch (itemError: any) {
+              console.error(`  ❌ Error copying ${item}:`, itemError?.message);
+            }
+
+            // Verify this item was copied
+            if (!existsSync(targetPath)) {
+              console.error(`  ❌ Failed to copy: ${item}`);
+            }
+          }
+        } catch (copyError: any) {
+          console.error('  ❌ Error during copy:', copyError);
+          throw copyError;
+        }
+
+        // Verify files were actually copied
+        const copiedFiles = existsSync(join(targetDir, 'README.md'));
+
+        // Make ralph.sh executable if it exists
+        const ralphPath = join(targetDir, 'ralph.sh');
+        if (existsSync(ralphPath)) {
+          chmodSync(ralphPath, 0o755);
+          console.log('  ✓ Made ralph.sh executable');
+        }
+
+        if (!copiedFiles) {
+          console.error('  ❌ Files were not copied! This is a bug.');
+          console.error('  Please report this at: https://github.com/dilgerma/embuilder/issues');
+          process.exit(1);
+        }
+
+        console.log('  ✓ All template files and directories copied');
+        console.log('    - README.md, Claude.md, AGENTS.md, prompt.md, ralph.sh');
+        console.log('    - .claude/ directory with skills and generators');
+        console.log('    - All other template contents');
 
         console.log('\n📝 Templates copied! You can now:');
         console.log('  - Read README.md for detailed usage instructions');
