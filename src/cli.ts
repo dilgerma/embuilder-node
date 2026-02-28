@@ -26,7 +26,6 @@ program
 
     try {
       // Copy template files if requested
-      if (options.withTemplates) {
         console.log('\n📄 Copying all templates to current directory...');
         const templatesSource = join(__dirname, '..', 'templates');
         const targetDir = process.cwd();
@@ -121,49 +120,9 @@ program
         console.log('  - Use skills in .claude/skills/ for code generation');
 
         console.log('\n✅ Installation complete with templates!');
-      } else {
-        // Just copy skills without templates
-        console.log('📄 Installing skills only...');
+          console.log("\n💡Want to initialize the project? Just run this command:")
+          console.log("\ndocker run -v $PWD:/workspace nebulit/generators")
 
-        // Ensure .claude/skills directory exists
-        const baseSkillsDir = dirname(SKILLS_DIR);
-        if (!existsSync(baseSkillsDir)) {
-          mkdirSync(baseSkillsDir, { recursive: true });
-        }
-
-        // Get the skills directory from templates
-        const skillsSource = join(__dirname, '..', 'templates', '.claude', 'skills');
-
-        // Remove existing directory if it exists
-        if (existsSync(SKILLS_DIR)) {
-          console.log('  Removing existing installation...');
-          rmSync(SKILLS_DIR, { recursive: true, force: true });
-        }
-
-        // Copy skills directory from templates
-        if (existsSync(skillsSource)) {
-          cpSync(skillsSource, SKILLS_DIR, { recursive: true });
-          console.log(`✅ Skills copied to: ${SKILLS_DIR}`);
-        } else {
-          throw new Error(`Skills directory not found at: ${skillsSource}`);
-        }
-
-        console.log('\nAvailable commands:');
-        console.log('\n  Event Model Slices:');
-        console.log('\n  Configuration:');
-        console.log('  /fetch-config       - Fetch config.json from event model app');
-        console.log('\n  Yeoman Generators:');
-        console.log('  /slice-state-change   - Generate state change slices from config.json');
-        console.log('  /slice-state-view     - Generate state view slices from config.json');
-        console.log('  /slice-automation     - Generate automation slices from config.json');
-        console.log('  /gen-ui             - Set up React UI with shadcn/ui and Supabase');
-
-        console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
-        console.log('\n✅ Installation complete!');
-
-        console.log("\nWant to initialize the project? Just run this command:")
-        console.log("\ndocker run -v $PWD:/workspace nebulit/generators")
-      }
     } catch (error) {
       console.error('❌ Installation failed:', error);
       process.exit(1);
