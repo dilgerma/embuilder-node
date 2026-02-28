@@ -150,16 +150,12 @@ program
 
         console.log('\nAvailable commands:');
         console.log('\n  Event Model Slices:');
-        console.log('  /automation-slice   - Generate automation slice from event model');
-        console.log('  /state-change-slice - Generate state-change slice from event model');
-        console.log('  /state-view-slice   - Generate state-view slice from event model');
         console.log('\n  Configuration:');
         console.log('  /fetch-config       - Fetch config.json from event model app');
         console.log('\n  Yeoman Generators:');
-        console.log('  /gen-skeleton       - Generate Supabase backend skeleton app');
-        console.log('  /gen-state-change   - Generate state change slices from config.json');
-        console.log('  /gen-state-view     - Generate state view slices from config.json');
-        console.log('  /gen-automation     - Generate automation slices from config.json');
+        console.log('  /slice-state-change   - Generate state change slices from config.json');
+        console.log('  /slice-state-view     - Generate state view slices from config.json');
+        console.log('  /slice-automation     - Generate automation slices from config.json');
         console.log('  /gen-ui             - Set up React UI with shadcn/ui and Supabase');
 
         console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
