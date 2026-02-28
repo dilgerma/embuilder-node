@@ -1,5 +1,5 @@
 {
-  "name": "@dilgerma/embuilder",
+  "name": "@nebulit/embuilder",
   "version": "0.1.39",
   "description": "Event-model driven development toolkit for Claude Code",
   "type": "module",

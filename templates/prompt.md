@@ -1,6 +1,6 @@
 # Ralph Agent Instructions
 
-You are an autonomous coding agent working on a software project. You apply your skills to build software slices. You only work on one slice at a time.
+You are an autonomous coding agent working on the backend of a software project. You apply your skills to build software slices. You only work on one slice at a time.
 
 The structure defined in the Project-Skills is relevant.
 
@@ -10,26 +10,27 @@ The structure defined in the Project-Skills is relevant.
 1. Read the description at `.slices/index.json` (in the same directory as this file). Every item in status "planned" is a task.
 2. Read the progress log at `progress.txt` (check Codebase Patterns section first)
 3. Make sure you are on the right branch "feature/<slicename>", if unsure, start from main.
-5. Pick the **highest priority** slice where status is "planned" ( case insensitive ). This becomes your PRD. Set the status "InProgress" in the index.json. If no slice has status planned, reply with:
+5. Pick the **highest priority** slice where status is "planned" ( case insensitive ) and is not assigned to 'ui_worker'. This becomes your PRD. Set the status "InProgress", add a started_date ( including date and time ) and add an "assignee=backend_worker" in the index.json. If no slice has status planned, reply with:
    <promise>NO_TASKS</promise> and stop. Do not work on other slices.
 6. Pick the slice definition from the project root /.slices in <folder> defined in the prd. Never work on more than one slice per iteration.
 7. A slice can define additional prompts as codegen/backendPrompt. any additional prompts defined in backend are hints for the implementation of the slice and have to be taken into account. If you use the additional prompt, add a line in progress.txt
-7. Define the slice type and load the matching skill. If the processors-array is not empty, it´s an automation slice.
+7. Define the slice type. If the processors-array is not empty, it´s an automation slice. Load the matching skill (automation-slice, state-change-slice, state-view-slice)
 8. Write a short progress one liner after each step to progress.txt
 9. Analyze and Implement that single slice, make use of the skills in the skills directory, but also your previsously collected
    knowledge. Make a list TODO list for what needs to be done. Also make sure to adjust the implementation according to the json definition. Carefully inspect events, fields and compare against the implemented slice. JSON is the desired state. ATTENTION: A "planned" task can also be just added specifications. So always look at the slice itself, but also the specifications. If specifications were added in json, which are not on code, you need to add them in code.
 10. The slice in the json is always true, the code follows what is defined in the json
-11. slice is only 'Done' if business logic is implemented as defined in the JSON, APIs are implemented, all scenarios in  JSON are implemented in code and it
+11. the backend of a slice is only 'Done' if business logic is implemented as defined in the JSON, APIs are implemented, all scenarios in  JSON are implemented in code and it
     fulfills the slice.json. There must be no specification in json, that has no equivalent in code.
 12. make sure to write the ui-prompt.md as defined if defined in the skill
 13. Run quality checks ( npm run build, npm run test ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
 14. even if the slice is fully implemented, run your test-analyzer skill and provide the code-slice.json file as defined in the skill
-15. Update the Slice in the index.json to either `status: Done` for the completed, 'status: Planned' if rework is necessary.
+15. Update the Slice in the index.json back to status 'Planned' and assign the 'ui-worker'
 16. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
     first )
 17. Append your progress to `progress.txt` after each step in the iteration.
 18. append your new learnings to AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
-19. Finish the iteration.
+19. change the assignee to ui_worker and set it back to planned.
+20. Finish the iteration.
 
 ## Progress Report Format
 

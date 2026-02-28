@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm publish)",
+      "Bash(~/.npmrc)",
+      "Bash(npm whoami:*)"
+    ]
+  }
+}
