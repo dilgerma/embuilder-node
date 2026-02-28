@@ -164,6 +164,9 @@ program
 
         console.log('\n💡 Tip: Run with --with-templates to copy all template files including .claude directory');
         console.log('\n✅ Installation complete!');
+
+        console.log("\nWant to initialize the project? Just run this command:")
+        console.log("\ndocker run -v $PWD:/workspace nebulit/generators")
       }
     } catch (error) {
       console.error('❌ Installation failed:', error);
