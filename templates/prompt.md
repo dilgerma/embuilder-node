@@ -13,7 +13,7 @@ The structure defined in the Project-Skills is relevant.
 5. Pick the **highest priority** slice where status is "planned" ( case insensitive ). This becomes your PRD. Set the status "in_progress" in the index.json. If no slice has status planned, reply with:
    <promise>NO_TASKS</promise> and stop. Do not work on other slices.
 6. Pick the slice definition from the project root /.slices in <folder> defined in the prd. Never work on more than one slice per iteration.
-7. Define the slice type and load the matching skill. If the processors-array is not empty, it´s an automation slice.
+7. Define the slice type ( state-view, state-change, automation ) and load the matching skill ( slice-state-view, slice-state-change, slice-automation ). If the processors-array is not empty, it´s an automation slice.
 8. Write a short progress one liner after each step to progress.txt
 9. Analyze and Implement that single slice, make use of the skills in the skills directory, but also your previsously collected
    knowledge. Make a list TODO list for what needs to be done. Also make sure to adjust the implementation according to the json definition. Carefully inspect events, fields and compare against the implemented slice. JSON is the desired state. ATTENTION: A "planned" task can also be just added specifications. So always look at the slice itself, but also the specifications. If specifications were added in json, which are not on code, you need to add them in code.
