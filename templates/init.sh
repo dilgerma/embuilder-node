@@ -1,0 +1,1 @@
+docker run -v $PWD:/workspace nebulit/generators
