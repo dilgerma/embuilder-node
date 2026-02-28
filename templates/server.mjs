@@ -172,6 +172,18 @@ const server = createServer(async (req, res) => {
 
                 // Write all slices
                 if (config.slices) {
+                    // Build a map of slice ID to group ID from sliceGroups
+                    const sliceToGroupMap = new Map();
+                    if (config.sliceGroups) {
+                        config.sliceGroups.forEach((group) => {
+                            if (group.sliceIds) {
+                                group.sliceIds.forEach((sliceId) => {
+                                    sliceToGroupMap.set(sliceId, group.id);
+                                });
+                            }
+                        });
+                    }
+
                     config.slices.forEach((slice) => {
                         const baseFolder = join(SLICES_DIR, slice.context ?? "default");
                         const sliceFolder = slice.title?.replaceAll(" ", "")?.replaceAll("slice:", "")?.toLowerCase();
@@ -184,6 +196,13 @@ const server = createServer(async (req, res) => {
                         const filePath = join(folder, 'slice.json');
                         const sliceData = { ...slice };
                         delete sliceData.index;
+
+                        // Add group ID to slice data if it belongs to a group
+                        const groupId = sliceToGroupMap.get(slice.id);
+                        if (groupId) {
+                            sliceData.group = groupId;
+                        }
+
                         writeFileSync(filePath, JSON.stringify(sliceData, null, 2));
 
                         const sliceIndex = {
@@ -194,6 +213,11 @@ const server = createServer(async (req, res) => {
                             folder: sliceFolder,
                             status: slice.status
                         };
+
+                        // Add group ID to index entry if it belongs to a group
+                        if (groupId) {
+                            sliceIndex.group = groupId;
+                        }
 
                         const index = sliceIndices.slices.findIndex(it => it.id == slice.id);
                         if (index == -1) {
@@ -223,8 +247,6 @@ const server = createServer(async (req, res) => {
                 }
 
                 sendJSON(res, { success: true, path: join(ROOT, fileName) });
-                console.log('🛑 Shutting down server...');
-                server.close(() => process.exit(0));
             } catch (err) {
                 sendJSON(res, { success: false, error: err.message }, 400);
             }
