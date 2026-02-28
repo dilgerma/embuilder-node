@@ -4,6 +4,22 @@ Build React + TypeScript UI components from slice JSON definitions using establi
 
 ---
 
+## 0. Available Skills (Use These!)
+
+This project has custom skills available in `.claude/skills/` that automate common tasks:
+
+- **`/ui-build-slice-ui`**: Complete orchestrator - builds entire UI from slice definitions (types → API → hooks → components)
+- **`/ui-analyze-slices`**: Analyze slice JSON files to identify grouping, dependencies, and implementation strategy
+- **`/ui-read-ui-prompts`**: Find and parse UI prompts from slice definitions and `ui-prompt.md`
+- **`/ui-generate-types`**: Generate TypeScript interfaces from slice field definitions
+- **`/ui-generate-api`**: Generate API layer functions for queries (Supabase) and commands (POST)
+- **`/ui-generate-hook`**: Generate React Query hooks for STATE_VIEW (queries) and STATE_CHANGE (mutations)
+- **`/ui-scaffold-component`**: Scaffold React components (List, Dialog, Page) using Bulma CSS
+
+**IMPORTANT**: When asked to build UI from slices, USE the `/ui-build-slice-ui` skill first! It will orchestrate all other skills in the correct order. Only use individual skills when you need to regenerate or modify a specific part.
+
+---
+
 ## 1. Slice Composition (CRITICAL)
 
 ### Slice Types
@@ -25,8 +41,8 @@ Slice C: { groupId: "123", sliceType: "STATE_CHANGE", title: "Cancel Event" }
 
 ### UI Prompts Priority
 
-1. Check `ui-prompt.md` (detailed specs)
-2. Check `codeGen.uiPrompts` array (high-level guidance)
+1. Check `ui-prompt.md` (detailed specs) - Use `/ui-read-ui-prompts` skill
+2. Check `codeGen.uiPrompts` array (high-level guidance) - Use `/ui-read-ui-prompts` skill
 3. Follow this prompt (standard patterns)
 4. Keep it simple if no guidance
 
@@ -56,10 +72,10 @@ import { useQuery } from "@tanstack/react-query";
 import * as api from "@/lib/api";
 
 export function useEvents() {
-  return useQuery({
-    queryKey: ["events"],
-    queryFn: () => api.fetchEvents(),
-  });
+    return useQuery({
+        queryKey: ["events"],
+        queryFn: () => api.fetchEvents(),
+    });
 }
 ```
 
@@ -67,15 +83,15 @@ export function useEvents() {
 
 ```typescript
 export function useCreateEvent() {
-  const ctx = useApiContext();
-  const queryClient = useQueryClient();
+    const ctx = useApiContext();
+    const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (params: api.CreateEventParams) => api.createEvent(params, ctx),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["events"] });
-    },
-  });
+    return useMutation({
+        mutationFn: (params: api.CreateEventParams) => api.createEvent(params, ctx),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["events"] });
+        },
+    });
 }
 ```
 
@@ -88,11 +104,11 @@ export function useCreateEvent() {
 ```typescript
 // src/lib/api.ts
 export async function fetchEvents(): Promise<Event[]> {
-  const { data, error } = await supabase
-    .from("events_for_planning")  // Read model table
-    .select("*");
-  if (error) throw new Error(error.message);
-  return data || [];
+    const { data, error } = await supabase
+        .from("events_for_planning")  // Read model table
+        .select("*");
+    if (error) throw new Error(error.message);
+    return data || [];
 }
 ```
 
@@ -100,21 +116,21 @@ export async function fetchEvents(): Promise<Event[]> {
 
 ```typescript
 export async function createEvent(params: CreateEventParams, ctx: ApiContext) {
-  const response = await apiRequest(
-    commandEndpoints.createEvent,  // /api/createevent
-    ctx,
-    { method: "POST", body: { ...params } }
-  );
-  if (!response.ok) throw new Error(response.error);
-  return response.data;
+    const response = await apiRequest(
+        commandEndpoints.createEvent,  // /api/createevent
+        ctx,
+        { method: "POST", body: { ...params } }
+    );
+    if (!response.ok) throw new Error(response.error);
+    return response.data;
 }
 ```
 
 **Add endpoint in `src/lib/api-client.ts`**:
 ```typescript
 export const commandEndpoints = {
-  createEvent: "/api/createevent",
-  // ...
+    createEvent: "/api/createevent",
+    // ...
 };
 ```
 
@@ -130,22 +146,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEvents } from "@/hooks/api/useEvents";
 
 export function EventList() {
-  const { data: events = [], isLoading } = useEvents();
+    const { data: events = [], isLoading } = useEvents();
 
-  if (isLoading) {
-    return <Skeleton className="h-20 w-full" />;
-  }
+    if (isLoading) {
+        return <Skeleton className="h-20 w-full" />;
+    }
 
-  return (
-    <div className="grid gap-4 md:grid-cols-2">
-      {events.map(event => (
-        <Card key={event.id}>
-          <CardHeader><CardTitle>{event.name}</CardTitle></CardHeader>
-          <CardContent>{event.date}</CardContent>
-        </Card>
-      ))}
+    return (
+        <div className="grid gap-4 md:grid-cols-2">
+            {events.map(event => (
+                    <Card key={event.id}>
+                        <CardHeader><CardTitle>{event.name}</CardTitle></CardHeader>
+            <CardContent>{event.date}</CardContent>
+            </Card>
+    ))}
     </div>
-  );
+);
 }
 ```
 
@@ -161,36 +177,36 @@ import { useCreateEvent } from "@/hooks/api/useEvents";
 import { toast } from "sonner";
 
 export function CreateEventDialog({ open, onOpenChange }) {
-  const createEvent = useCreateEvent();
-  const [form, setForm] = useState({ name: "", date: "" });
+    const createEvent = useCreateEvent();
+    const [form, setForm] = useState({ name: "", date: "" });
 
-  const handleSubmit = async () => {
-    if (!form.name) return toast.error("Name required");
-    try {
-      await createEvent.mutateAsync(form);
-      toast.success("Created");
-      onOpenChange(false);
-    } catch (err) {
-      toast.error(`Error: ${err.message}`);
-    }
-  };
+    const handleSubmit = async () => {
+        if (!form.name) return toast.error("Name required");
+        try {
+            await createEvent.mutateAsync(form);
+            toast.success("Created");
+            onOpenChange(false);
+        } catch (err) {
+            toast.error(`Error: ${err.message}`);
+        }
+    };
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader><DialogTitle>Create Event</DialogTitle></DialogHeader>
-        <div className="space-y-4">
-          <div>
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+            <DialogHeader><DialogTitle>Create Event</DialogTitle></DialogHeader>
+    <div className="space-y-4">
+        <div>
             <Label>Name</Label>
-            <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-          </div>
-          <Button onClick={handleSubmit} disabled={createEvent.isPending}>
-            Create
-          </Button>
+        <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+    </div>
+    <Button onClick={handleSubmit} disabled={createEvent.isPending}>
+        Create
+        </Button>
         </div>
-      </DialogContent>
-    </Dialog>
-  );
+        </DialogContent>
+        </Dialog>
+);
 }
 ```
 
@@ -198,25 +214,52 @@ export function CreateEventDialog({ open, onOpenChange }) {
 
 ```typescript
 export function EventsPage() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
-  return (
-    <div className="p-6">
-      <div className="flex justify-between mb-6">
+    return (
+        <div className="p-6">
+        <div className="flex justify-between mb-6">
         <h1 className="text-2xl font-bold">Events</h1>
-        <Button onClick={() => setDialogOpen(true)}>Create Event</Button>
-      </div>
-
-      <EventList />
-      <CreateEventDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+            <Button onClick={() => setDialogOpen(true)}>Create Event</Button>
     </div>
-  );
+
+    <EventList />
+    <CreateEventDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+    </div>
+);
 }
 ```
 
 ---
 
 ## 6. Implementation Workflow
+
+### Recommended Approach: Use Skills!
+
+**For complete UI generation from slices:**
+```bash
+# Use the orchestrator skill - it handles everything
+/ui-build-slice-ui <slice-file-paths>
+```
+
+This will automatically:
+1. Analyze slices (`/ui-analyze-slices`)
+2. Read UI prompts (`/ui-read-ui-prompts`)
+3. Generate types (`/ui-generate-types`)
+4. Generate API functions (`/ui-generate-api`)
+5. Generate hooks (`/ui-generate-hook`)
+6. Scaffold components (`/ui-scaffold-component`)
+7. Verify integration
+
+**For individual tasks:**
+- **Analyze before coding**: `/ui-analyze-slices <slice-files>` - Understand grouping and dependencies
+- **Read requirements**: `/ui-read-ui-prompts <slice-folder>` - Extract design specs and validation rules
+- **Generate types only**: `/ui-generate-types <slice-file>` - Create TypeScript interfaces
+- **Generate API only**: `/ui-generate-api <slice-file>` - Create Supabase queries or POST commands
+- **Generate hook only**: `/ui-generate-hook <slice-file>` - Create React Query hooks
+- **Generate component only**: `/ui-scaffold-component <slice-files>` - Create React components with Bulma CSS
+
+### Manual Workflow (If not using skills)
 
 ### Step 0: Analyze Grouping
 - Find all slices with same `groupId`
@@ -227,14 +270,14 @@ export function EventsPage() {
 ```typescript
 // src/types/index.ts
 export interface Event {
-  event_id: string;
-  name: string;
-  date: string;
+    event_id: string;
+    name: string;
+    date: string;
 }
 
 export interface CreateEventParams {
-  name: string;
-  date: string;
+    name: string;
+    date: string;
 }
 ```
 
@@ -273,10 +316,10 @@ export interface CreateEventParams {
 **Error Handling**:
 ```typescript
 try {
-  await mutation.mutateAsync(params);
-  toast.success("Success");
+    await mutation.mutateAsync(params);
+    toast.success("Success");
 } catch (err) {
-  toast.error(`Error: ${err.message}`);
+    toast.error(`Error: ${err.message}`);
 }
 ```
 
@@ -286,7 +329,21 @@ try {
 
 ---
 
-## 9. UI Components (shadcn/ui)
+## 9. UI Components
+
+**NOTE**: The skills in `.claude/skills/` are configured to use **Bulma CSS** for styling. If you're using the skills (especially `/scaffold-component`), components will be generated with Bulma classes.
+
+### Bulma CSS (Used by Skills)
+
+When using skills, components use Bulma classes:
+- Layout: `container`, `section`, `columns`, `column`
+- Components: `card`, `modal`, `button`, `notification`, `box`
+- Forms: `field`, `control`, `label`, `input`, `select`, `textarea`
+- Modifiers: `is-primary`, `is-active`, `is-fullwidth`, `has-text-centered`
+
+### shadcn/ui (Alternative)
+
+If manually implementing (not using skills), you can use shadcn/ui components:
 
 Import from `@/components/ui/*`:
 - `Button`, `Input`, `Label`, `Textarea`, `Select`
@@ -294,6 +351,8 @@ Import from `@/components/ui/*`:
 - `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`
 - `Table`, `Tabs`, `Skeleton`
 - `toast` from `sonner`
+
+**Recommendation**: Use the skills with Bulma CSS for consistency with project configuration.
 
 ---
 
@@ -322,3 +381,104 @@ Import from `@/components/ui/*`:
 ✅ **STATE_CHANGE** = Command → Mutation hook → Form/Dialog
 ✅ **Keep modular** = Sub-components for each slice capability
 ✅ **Keep simple** = Follow existing patterns, don't over-engineer
+
+---
+
+## 10. Skills Usage Examples
+
+### Example 1: Building Complete UI from Scratch
+
+**User Request**: "Build the UI for the events management slices"
+
+**Your Response**:
+```bash
+# First, analyze what we're working with
+/ui-analyze-slices src/slices/events/*.json
+
+# Then build everything at once
+/ui-build-slice-ui src/slices/events/ViewEvents.json src/slices/events/CreateEvent.json
+```
+
+### Example 2: Just Need to Understand Slices
+
+**User Request**: "What slices are in the orders group?"
+
+**Your Response**:
+```bash
+# Use ui-analyze-slices to understand the grouping
+/ui-analyze-slices src/slices/orders/*.json
+```
+
+### Example 3: Regenerating Just Types
+
+**User Request**: "The Event interface is wrong, regenerate it from the slice"
+
+**Your Response**:
+```bash
+# Use ui-generate-types to recreate just the TypeScript interfaces
+/ui-generate-types src/slices/events/ViewEvents.json
+```
+
+### Example 4: Adding New API Endpoint
+
+**User Request**: "Add the API function for the CancelEvent command"
+
+**Your Response**:
+```bash
+# Use ui-generate-api to create the API layer
+/ui-generate-api src/slices/events/CancelEvent.json
+```
+
+### Example 5: Understanding UI Requirements
+
+**User Request**: "What are the validation rules for the event form?"
+
+**Your Response**:
+```bash
+# Use ui-read-ui-prompts to extract requirements
+/ui-read-ui-prompts src/slices/events/
+```
+
+### Example 6: Fixing Component Styling
+
+**User Request**: "The EventList component doesn't look right, regenerate it with proper Bulma styling"
+
+**Your Response**:
+```bash
+# Use ui-scaffold-component to regenerate with Bulma CSS
+/ui-scaffold-component src/slices/events/ViewEvents.json
+```
+
+### Decision Tree: Which Skill to Use?
+
+```
+Need to build complete UI from slices?
+  └─> /ui-build-slice-ui (orchestrates everything)
+
+Just exploring/understanding?
+  └─> /ui-analyze-slices (analysis only)
+
+Just need to understand UI requirements?
+  └─> /ui-read-ui-prompts (extract specs)
+
+Need to fix/regenerate specific layer?
+  ├─> Types wrong? → /ui-generate-types
+  ├─> API functions wrong? → /ui-generate-api
+  ├─> Hooks wrong? → /ui-generate-hook
+  └─> Components wrong? → /ui-scaffold-component
+
+Don't know which skill to use?
+  └─> Start with /ui-analyze-slices, then use /ui-build-slice-ui
+```
+
+---
+
+## Remember
+
+**ALWAYS** prefer using the skills over manual implementation! They ensure:
+- Consistency across the codebase
+- Proper use of Bulma CSS
+- Correct CQRS patterns
+- Proper TypeScript types
+- React Query best practices
+- Adherence to UI prompts and validation rules
