@@ -3,17 +3,12 @@
  * Licensed under the MIT License.
  */
 
-var Generator = require('yeoman-generator').default;
-var slugify = require('slugify');
-
-var config = {}
+var Generator = require('yeoman-generator')
 
 module.exports = class extends Generator {
 
     constructor(args, opts) {
         super(args, opts);
-
-        this.argument('appname', {type: String, required: false});
     }
 
     writing() {
@@ -21,10 +16,6 @@ module.exports = class extends Generator {
     }
 
     _generateSkeleton() {
-        const appName = this.answers.appName;
-
-        this.log(`Generating skeleton app: ${appName}`);
-
         this.fs.copy(
             this.templatePath('root/**/*'),
             this.destinationPath("."),
