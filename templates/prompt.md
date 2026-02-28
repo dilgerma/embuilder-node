@@ -24,9 +24,9 @@ The structure defined in the Project-Skills is relevant.
 12. make sure to write the ui-prompt.md as defined if defined in the skill
 13. Run quality checks ( npm run build, npm run test ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
 14. even if the slice is fully implemented, run your test-analyzer skill and provide the code-slice.json file as defined in the skill
-15. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
+15. Update the Slice in the index.json to either `status: Done` for the completed, 'status: Planned' if rework is necessary.
+16. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
     first )
-16. Update the PRD to set `status: Done` for the completed story.
 17. Append your progress to `progress.txt` after each step in the iteration.
 18. append your new learnings to AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
 19. Finish the iteration.
