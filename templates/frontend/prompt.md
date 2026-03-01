@@ -10,7 +10,7 @@ If a slice is in status 'planned', Even if a slice seems to have been implemente
 1. Read the description at `.slices/index.json` (in the same directory as this file). Every item in status "planned"  and assigned to "ui_worker" is a task.
 2. Read the progress log at `progress.txt` (check Codebase Patterns section first)
 3. Make sure you are on the right branch "feature/<slicename>", the branch should exist.
-5. Pick the **highest priority** task assigned to ui_worker. This becomes your PRD. Set the status "InProgress", add a started_date ( including date and time ) in the index.json. If no slice has status planned, reply with:
+5. Pick the **highest priority** task assigned to ui_worker. This becomes your task. Set the status "InProgress", add a started_date ( including date and time ) in the index.json. If no slice has status planned, reply with:
    <promise>NO_TASKS</promise> and stop. Do not work on other slices.
 6. Pick the slice definition from the project root /.slices in <folder> defined in the prd. Never work on more than one slice per iteration.
 7. A slice can define additional prompts as codegen/uiPrompt. any additional prompts defined in backend are hints for the implementation of the slice and have to be taken into account. If you use the additional prompt, add a line in progress.txt
@@ -18,15 +18,15 @@ If a slice is in status 'planned', Even if a slice seems to have been implemente
 9. Analyze and Implement according to the Rest of the instructions in this file, make use of the skills in the skills directory, but also your previsously collected
    knowledge. Make a list TODO list for what needs to be done. Also make sure to adjust the implementation according to the json definition.
 10. The slice in the json is always true, the code follows what is defined in the json
-11. the slice is only 'Done' if APIs are implemented.
-12. make sure to read the ui-prompt.md in /backend/src/slices/<slice>
-13. If a custom uiPrompt in the slice.json defines where  the  component should be mounted, this always has to be done. If no mount point is defined in uiPrompt, verify if there is natural place where to mount a component. If there is no natural place, create a new page,  name it after the componenet and define a Route in App.tsx
-14. Run quality checks ( npm run build, tsc ) - Attention - the slice is only done if the component is placed somewhere.
+11. make sure to read the ui-prompt.md in /backend/src/slices/<slice>/
+13. carefully read custom uiPrompt in the slice.json and follow the instructions. If no mount point is defined in uiPrompt, verify if there is natural place where to mount the component. If there is no natural place, create a new page,  name it after the Component and define a Route in App.tsx
+14. Run quality checks ( npm run build, tsc ) - Attention - the slice is only done if the component is mounted and testable.
+15. Make sure to style components according to the style guides.
 16. Update the Slice in the index.json to status 'Done' and remove assignment
-17. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
+17. Append your progress to `progress.txt` after each step in the iteration.
+18. append your new learnings to frontend/AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
+19. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
     first )
-18. Append your progress to `progress.txt` after each step in the iteration.
-19. append your new learnings to frontend/AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
 20. Finish the iteration.
 
 ---
