@@ -275,6 +275,7 @@ const server = createServer(async (req, res) => {
             const allSlices = indexData.slices.map(s => ({
                 title: s.slice,
                 status: s.status,
+                assignee: s.assignee,
                 id: s.id,
                 specifications: specificationsMap.get(s.id)
             }));
