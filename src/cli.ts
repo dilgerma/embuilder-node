@@ -20,7 +20,6 @@ program
 program
   .command('install')
   .description('Install event-model skills into Claude Code')
-  .option('--with-templates', 'Also copy template files (ralph.sh, AGENTS.md, Claude.md, prompt.md, README.md) and generators to current directory')
   .action((options) => {
     console.log('📦 Installing EMBuilder...\n');
 
@@ -36,8 +35,8 @@ program
           console.error(`   Package location: ${__dirname}`);
           console.error('');
           console.error('This might be caused by:');
-          console.error('  1. Old cached version - try: npx --yes @dilgerma/embuilder@latest install --with-templates');
-          console.error('  2. Package not published correctly - reinstall with: npm install -g @dilgerma/embuilder@latest');
+          console.error('  1. Old cached version - try: npx --yes @@nebulit/embuilder@latest install');
+          console.error('  2. Package not published correctly - reinstall with: npm install -g @nebulit/embuilder@latest');
           console.error('');
           console.error('If the problem persists, please report at:');
           console.error('  https://github.com/dilgerma/embuilder/issues');

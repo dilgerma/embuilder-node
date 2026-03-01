@@ -1,0 +1,124 @@
+{
+  "id": "3458764661593137476",
+  "title": "slice: Add Book",
+  "specifications": [
+    {
+      "vertical": false,
+      "id": "GENERATED-SPEC-001",
+      "sliceName": "slice: Add Book",
+      "type": "COMMAND",
+      "title": "should create BookAdded event when adding a book",
+      "given": [],
+      "when": [
+        {
+          "id": "GENERATED-WHEN-001",
+          "linkedId": "3458764661591564785",
+          "title": "Add Book",
+          "type": "COMMAND",
+          "fields": [
+            {
+              "name": "title",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "Harry Potter",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "author",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "J.K. Rowling",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "description",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "A magical adventure",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "isbn",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "1234567890",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "user",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "john@example.com",
+              "subfields": [],
+              "idAttribute": false
+            }
+          ]
+        }
+      ],
+      "then": [
+        {
+          "id": "GENERATED-THEN-001",
+          "linkedId": "3458764661586330620",
+          "title": "Book added",
+          "type": "SPEC_EVENT",
+          "fields": [
+            {
+              "name": "id",
+              "type": "String",
+              "cardinality": "Single",
+              "subfields": [],
+              "idAttribute": false,
+              "generated": true
+            },
+            {
+              "name": "title",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "Harry Potter",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "author",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "J.K. Rowling",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "description",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "A magical adventure",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "isbn",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "1234567890",
+              "subfields": [],
+              "idAttribute": false
+            },
+            {
+              "name": "user",
+              "type": "String",
+              "cardinality": "Single",
+              "example": "john@example.com",
+              "subfields": [],
+              "idAttribute": false
+            }
+          ]
+        }
+      ],
+      "comments": [],
+      "linkedId": "GENERATED-SPEC-001"
+    }
+  ]
+}

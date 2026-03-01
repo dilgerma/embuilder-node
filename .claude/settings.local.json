@@ -3,7 +3,11 @@
     "allow": [
       "Bash(npm publish)",
       "Bash(~/.npmrc)",
-      "Bash(npm whoami:*)"
+      "Bash(npm whoami:*)",
+      "Bash(npm pack:*)",
+      "Bash(tar:*)",
+      "Bash(find:*)",
+      "Bash(npm view:*)"
     ]
   }
 }
