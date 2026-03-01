@@ -41,7 +41,7 @@ This project has custom skills available in `.claude/skills/` that automate comm
 - **`/ui-generate-types`**: Generate TypeScript interfaces from slice field definitions
 - **`/ui-generate-api`**: Generate API layer functions for queries (Supabase) and commands (POST)
 - **`/ui-generate-hook`**: Generate React Query hooks for STATE_VIEW (queries) and STATE_CHANGE (mutations)
-- **`/ui-scaffold-component`**: Scaffold React components (List, Dialog, Page) using Bulma CSS
+- **`/ui-scaffold-component`**: Scaffold React components (List, Dialog, Page) using Tailwind CSS
 
 **IMPORTANT**: When asked to build UI from slices, USE the `/ui-build-slice-ui` skill first! It will orchestrate all other skills in the correct order. Only use individual skills when you need to regenerate or modify a specific part.
 **IMPORTANT**: Unless stated in a custom prompt, components read directly from the tables provided, not from api-endpoints via HTTP
@@ -285,7 +285,7 @@ This will automatically:
 - **Generate types only**: `/ui-generate-types <slice-file>` - Create TypeScript interfaces
 - **Generate API only**: `/ui-generate-api <slice-file>` - Create Supabase queries or POST commands
 - **Generate hook only**: `/ui-generate-hook <slice-file>` - Create React Query hooks
-- **Generate component only**: `/ui-scaffold-component <slice-files>` - Create React components with Bulma CSS
+- **Generate component only**: `/ui-scaffold-component <slice-files>` - Create React components with Tailwind CSS
 
 ### Manual Workflow (If not using skills)
 
@@ -359,15 +359,7 @@ try {
 
 ## 9. UI Components
 
-**NOTE**: The skills in `.claude/skills/` are configured to use **Bulma CSS** for styling. If you're using the skills (especially `/scaffold-component`), components will be generated with Bulma classes.
-
-### Bulma CSS (Used by Skills)
-
-When using skills, components use Bulma classes:
-- Layout: `container`, `section`, `columns`, `column`
-- Components: `card`, `modal`, `button`, `notification`, `box`
-- Forms: `field`, `control`, `label`, `input`, `select`, `textarea`
-- Modifiers: `is-primary`, `is-active`, `is-fullwidth`, `has-text-centered`
+**NOTE**: The skills in `.claude/skills/` are configured to use **Tailwind CSS** for styling. If you're using the skills (especially `/scaffold-component`), components will be generated with Tailwind classes.
 
 ### shadcn/ui (Alternative)
 
@@ -380,7 +372,7 @@ Import from `@/components/ui/*`:
 - `Table`, `Tabs`, `Skeleton`
 - `toast` from `sonner`
 
-**Recommendation**: Use the skills with Bulma CSS for consistency with project configuration.
+**Recommendation**: Use the skills with Tailwind CSS for consistency with project configuration.
 
 ---
 
@@ -469,11 +461,11 @@ Import from `@/components/ui/*`:
 
 ### Example 6: Fixing Component Styling
 
-**User Request**: "The EventList component doesn't look right, regenerate it with proper Bulma styling"
+**User Request**: "The EventList component doesn't look right, regenerate it with proper Tailwind styling"
 
 **Your Response**:
 ```bash
-# Use ui-scaffold-component to regenerate with Bulma CSS
+# Use ui-scaffold-component to regenerate with Tailwind CSS
 /ui-scaffold-component src/slices/events/ViewEvents.json
 ```
 
@@ -505,7 +497,7 @@ Don't know which skill to use?
 
 **ALWAYS** prefer using the skills over manual implementation! They ensure:
 - Consistency across the codebase
-- Proper use of Bulma CSS
+- Proper use of Tailwind CSS
 - Correct CQRS patterns
 - Proper TypeScript types
 - React Query best practices

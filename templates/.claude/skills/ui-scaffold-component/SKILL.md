@@ -1,14 +1,14 @@
 ---
 skill_name: ui-scaffold-component
-description: Scaffold React components (List, Dialog, Page) from slice definitions using Bulma CSS
+description: Scaffold React components (List, Dialog, Page) from slice definitions using tailwind CSS
 version: 1.0.0
 author: Frontend Development Team
-tags: [ui, components, react, bulma, scaffolding]
+tags: [ui, components, react, tailwind, scaffolding]
 ---
 
 # Component Scaffolder Skill
 
-Scaffold React components (List, Dialog, Page) from slice definitions using Bulma CSS.
+Scaffold React components (List, Dialog, Page) from slice definitions using tailwind CSS.
 
 ## Instructions
 
@@ -30,7 +30,7 @@ Your task is to:
    - **Dialog Component**: For STATE_CHANGE slices (forms for create/update)
    - **Page Component**: Combines list and dialogs into a complete page
 
-3. **Use Bulma CSS exclusively** for all styling:
+3. **Use tailwind CSS exclusively** for all styling:
    - Layout: `columns`, `column`, `container`, `section`
    - Components: `card`, `button`, `modal`, `box`, `table`
    - Form elements: `field`, `control`, `label`, `input`, `select`, `textarea`
@@ -252,7 +252,7 @@ import { EventsPage } from '@/components/events/EventsPage';
 { path: '/events', element: <EventsPage /> }
 ```
 
-## Bulma CSS Guidelines
+## tailwind CSS Guidelines
 
 - Use `columns` and `column` for responsive grid layouts
 - Use `card` for displaying entity items

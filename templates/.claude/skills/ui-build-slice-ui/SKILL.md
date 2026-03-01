@@ -59,7 +59,7 @@ Use the **ui-scaffold-component** skill to:
 - Create dialog components for STATE_CHANGE slices
 - Create page component to compose list and dialogs
 - Add components to `src/components/{domain}/`
-- Apply UI prompt requirements (Bulma CSS, validation, formatting)
+- Apply UI prompt requirements (tailwind CSS, validation, formatting)
 
 ### 7. Verify Integration
 - Check that all imports are correct
@@ -166,12 +166,12 @@ Before completing, verify:
 - [ ] API functions handle errors appropriately
 - [ ] Hooks are properly exported from index.ts
 - [ ] Components import all necessary dependencies
-- [ ] Bulma CSS classes are used correctly
+- [ ] tailwind CSS classes are used correctly
 - [ ] Form validation matches UI prompt requirements
 - [ ] Date/time formatting matches specifications
 - [ ] Loading and error states are handled
 - [ ] Success/error feedback is implemented
-- [ ] Responsive design is applied (Bulma columns)
+- [ ] Responsive design is applied (tailwind columns)
 - [ ] All files follow project conventions
 
 ## Integration with Existing Code
@@ -200,7 +200,7 @@ When modifying existing files:
 
 - Generate minimal, focused code (avoid over-engineering)
 - Follow existing project patterns and conventions
-- Use Bulma CSS exclusively (no custom CSS unless necessary)
+- Use tailwind CSS exclusively (no custom CSS unless necessary)
 - Include JSDoc comments for public APIs
 - Handle edge cases (empty lists, errors, loading)
 - Implement proper TypeScript types (no `any`)
@@ -222,7 +222,7 @@ When modifying existing files:
 - This skill orchestrates all other skills in sequence
 - Each step depends on the previous step's output
 - If UI prompts provide specific requirements, prioritize them over defaults
-- Always use Bulma CSS components and utilities
+- Always use tailwind CSS components and utilities
 - Generate clean, maintainable, production-ready code
 - Follow TypeScript strict mode requirements
 - Test the generated code before marking as complete

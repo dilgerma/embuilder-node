@@ -153,7 +153,7 @@ Your output would be:
 - Layout: Card layout for event list with 3-column grid (desktop) / 1-column (mobile)
 - Date Format: DD.MM.YYYY
 - Time Format: 24-hour format (HH:mm)
-- Component: Use Bulma cards and columns
+- Component: Use tailwind cards and columns
 
 #### Validation Rules:
 | Field | Rule | Message |
@@ -174,7 +174,7 @@ Your output would be:
 
 ### Implementation Guidance:
 
-1. Use Bulma modal with `is-active` class for dialog
+1. Use tailwind modal with `is-active` class for dialog
 2. Implement date formatting with `toLocaleDateString('de-DE')`
 3. Add form validation before submit
 4. Use `useMutation` onSuccess callback for toast and list refresh

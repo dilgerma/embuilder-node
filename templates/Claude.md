@@ -4,13 +4,13 @@ Read Events in src/events to understand the global structure.
 
 ## Framework & Styling
 
-- **CSS Framework**: Use Bulma CSS exclusively for all styling
-- **Assumption**: Bulma CSS is already available and imported in the project
+- **CSS Framework**: Use Tailwind CSS exclusively for all styling
+- **Assumption**: Tailwind CSS is already available and imported in the project
 - **Styling Guidelines**:
-    - Use Bulma's utility classes and components
-    - Follow Bulma's naming conventions and class structure
-    - Leverage Bulma's responsive design features
-    - Prefer Bulma components over custom CSS
+    - Use tailwind's utility classes and components
+    - Follow Tailwind's naming conventions and class structure
+    - Leverage Tailwind's responsive design features
+    - Prefer Tailwind components over custom CSS
 
 ## File Structure Constraints
 
@@ -26,7 +26,7 @@ Read Events in src/events to understand the global structure.
 ## Development Guidelines
 
 1. Each slice should be self-contained and focused on a specific domain
-2. Use Bulma's grid system, components, and utilities for all UI-related code
+2. Use tailwind's grid system, components, and utilities for all UI-related code
 3. Maintain clear separation of concerns within each slice
 4. Follow TypeScript best practices for type definitions and interfaces
 
@@ -49,10 +49,10 @@ src/slices/
 │   └── routes.ts
 ```
 
-## Bulma Integration Notes
+## tailwind Integration Notes
 
-- Utilize Bulma's component library: navbar, cards, buttons, forms, modals, etc.
-- Apply Bulma's spacing utilities: `m-*`, `p-*`, `has-text-*`, `has-background-*`
-- Use Bulma's flexbox utilities for layouts
-- Implement responsive design with Bulma's breakpoint classes
-- Leverage Bulma's color palette and typography classes
+- Utilize tailwind's component library: navbar, cards, buttons, forms, modals, etc.
+- Apply tailwind's spacing utilities: `m-*`, `p-*`, `has-text-*`, `has-background-*`
+- Use tailwind's flexbox utilities for layouts
+- Implement responsive design with tailwind's breakpoint classes
+- Leverage tailwind's color palette and typography classes
