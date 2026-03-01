@@ -104,20 +104,22 @@ import { ContextEvents } from '../../events/ContextEvents';
 - Use proper `initialState` function (not empty object `{}`) in `DeciderSpecification.for()`
 - Do NOT add explicit type arguments - let TypeScript infer (avoids TS2558)
 - Switch statements: always use explicit `break` to prevent fallthrough bugs
+- you must not change the signature of evolve - it has (state:State, event:Event)
+- you must not change the signature of decide - it has (state:State, command:Command)  - all data to verify the command must be passed via state.
 
 **Structure**:
 ```typescript
 type State = { /* track relevant state */ };
 const initialState = (): State => ({ /* defaults */ });
 const decide = (state: State, cmd: Command): Event[] => {
-  if (invalidCondition) throw 'error.code';
-  return [createEvent(cmd)];
+    if (invalidCondition) throw 'error.code';
+    return [createEvent(cmd)];
 };
 const evolve = (state: State, event: ContextEvents): State => {
-  switch (event.type) {
-    case 'EventType': return { ...state, field: newValue };
-    default: return state;
-  }
+    switch (event.type) {
+        case 'EventType': return { ...state, field: newValue };
+        default: return state;
+    }
 };
 ```
 
@@ -133,14 +135,14 @@ const evolve = (state: State, event: ContextEvents): State => {
 **Projection Structure**:
 ```typescript
 export const ProjectionName = postgreSQLRawSQLProjection({
-  canHandle: ['Event1', 'Event2'],
-  evolve: (event: Event1 | Event2) => {
-    switch (event.type) {
-      case 'Event1': return sql(db(table).insert({...}).onConflict().merge());
-      case 'Event2': return sql(db(table).where({...}).delete());
-      default: return [];
+    canHandle: ['Event1', 'Event2'],
+    evolve: (event: Event1 | Event2) => {
+        switch (event.type) {
+            case 'Event1': return sql(db(table).insert({...}).onConflict().merge());
+            case 'Event2': return sql(db(table).where({...}).delete());
+            default: return [];
+        }
     }
-  }
 });
 ```
 
@@ -158,22 +160,22 @@ import { createServiceClient } from '../../common/supabaseClient';
 const config = { schedule: '*/30 * * * * *', endpoint: "work_queue_table" };
 
 export const processor = {
-  start: () => {
-    cron.schedule(config.schedule, async () => {
-      const client = createServiceClient();
-      const result = await client.from(config.endpoint)
-        .select("*").eq('must_process', true).limit(1);
+    start: () => {
+        cron.schedule(config.schedule, async () => {
+            const client = createServiceClient();
+            const result = await client.from(config.endpoint)
+                .select("*").eq('must_process', true).limit(1);
 
-      if (result.error) return;
-      for (const item of result.data ?? []) {
-        try {
-          await handleCommand(streamId, command, { userId: 'system', ...metadata });
-        } catch (error) {
-          console.error('Processing error:', error);
-        }
-      }
-    });
-  }
+            if (result.error) return;
+            for (const item of result.data ?? []) {
+                try {
+                    await handleCommand(streamId, command, { userId: 'system', ...metadata });
+                } catch (error) {
+                    console.error('Processing error:', error);
+                }
+            }
+        });
+    }
 };
 ```
 
@@ -189,9 +191,9 @@ export const processor = {
 ```typescript
 type State = { isActive: boolean };
 const decide = (state: State, cmd: Command): Event[] => {
-  if (state.isActive) throw "already.active";  // Activate guard
-  if (!state.isActive) throw "not.active";     // Deactivate guard
-  return [event];
+    if (state.isActive) throw "already.active";  // Activate guard
+    if (!state.isActive) throw "not.active";     // Deactivate guard
+    return [event];
 };
 ```
 
@@ -201,13 +203,13 @@ const decide = (state: State, cmd: Command): Event[] => {
 ```typescript
 type State = { trackedIds: Set<string> };
 const evolve = (state: State, event: ContextEvents): State => {
-  switch (event.type) {
-    case 'ItemAdded': return { trackedIds: new Set([...state.trackedIds, event.data.id]) };
-    case 'ItemRemoved':
-      const newSet = new Set(state.trackedIds);
-      newSet.delete(event.data.id);
-      return { trackedIds: newSet };
-  }
+    switch (event.type) {
+        case 'ItemAdded': return { trackedIds: new Set([...state.trackedIds, event.data.id]) };
+        case 'ItemRemoved':
+            const newSet = new Set(state.trackedIds);
+            newSet.delete(event.data.id);
+            return { trackedIds: newSet };
+    }
 };
 ```
 
@@ -217,10 +219,10 @@ const evolve = (state: State, event: ContextEvents): State => {
 ```typescript
 type State = { submitted: boolean; reverted: boolean; approved: boolean; declined: boolean };
 const decide = (state: State, cmd: Command): Event[] => {
-  if (state.submitted) throw 'cannot submit twice';
-  if (!state.submitted) throw 'not_submitted';
-  if (state.reverted) throw 'already_reverted';
-  return [event];
+    if (state.submitted) throw 'cannot submit twice';
+    if (!state.submitted) throw 'not_submitted';
+    if (state.reverted) throw 'already_reverted';
+    return [event];
 };
 ```
 
@@ -275,27 +277,27 @@ All endpoints must:
 ### STATE_CHANGE Tests
 ```typescript
 DeciderSpecification.for(decide, evolve, initialState)
-  .given([PrerequisiteEvent1, PrerequisiteEvent2])
-  .when(Command({ field: 'value' }))
-  .then([ExpectedEvent({ field: 'value' })]);
+    .given([PrerequisiteEvent1, PrerequisiteEvent2])
+    .when(Command({ field: 'value' }))
+    .then([ExpectedEvent({ field: 'value' })]);
 ```
 
 ### STATE_VIEW Tests
 ```typescript
 PostgreSQLProjectionSpec.for(ProjectionName)
-  .given([Event1, Event2])
-  .when([])  // Always empty
-  .then(async (state) => {
-    const result = await state.query();
-    assert.equal(result[0].field, expectedValue);
-  });
+    .given([Event1, Event2])
+    .when([])  // Always empty
+    .then(async (state) => {
+        const result = await state.query();
+        assert.equal(result[0].field, expectedValue);
+    });
 ```
 
 ### Error Case Tests
 ```typescript
 .given([EventCreated])
-.when(Command)
-.shouldFail();  // Expects error
+    .when(Command)
+    .shouldFail();  // Expects error
 ```
 
 ### Test Coverage

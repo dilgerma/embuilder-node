@@ -4,6 +4,8 @@ Build React + TypeScript UI components from slice JSON definitions using establi
 
 ## Your Task
 
+If a slice is in status 'planned', Even if a slice seems to have been implemented, make sure to verify the implementation, check for new fields, additional custom prompts in the slice json. A "planned" slice can also be an update of an existing slice. If that is the case, match the implemenetation to the updated slice definition.
+
 0. Do not read the entire code base. read /frontend/AGENTS.md. Focus on the tasks in this description.
 1. Read the description at `.slices/index.json` (in the same directory as this file). Every item in status "planned"  and assigned to "ui_worker" is a task.
 2. Read the progress log at `progress.txt` (check Codebase Patterns section first)
@@ -18,8 +20,8 @@ Build React + TypeScript UI components from slice JSON definitions using establi
 10. The slice in the json is always true, the code follows what is defined in the json
 11. the slice is only 'Done' if APIs are implemented.
 12. make sure to read the ui-prompt.md in /backend/src/slices/<slice>
-13. Place the component where it belongs. If you can´t find a place, add a new page with /debug/<page> to showcase the component.
-14. Run quality checks ( npm run build, tsc ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
+13. If a custom uiPrompt in the slice.json defines where  the  component should be mounted, this always has to be done. If no mount point is defined in uiPrompt, verify if there is natural place where to mount a component. If there is no natural place, create a new page,  name it after the componenet and define a Route in App.tsx
+14. Run quality checks ( npm run build, tsc ) - Attention - the slice is only done if the component is placed somewhere.
 16. Update the Slice in the index.json to status 'Done' and remove assignment
 17. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
     first )
@@ -42,6 +44,7 @@ This project has custom skills available in `.claude/skills/` that automate comm
 - **`/ui-scaffold-component`**: Scaffold React components (List, Dialog, Page) using Bulma CSS
 
 **IMPORTANT**: When asked to build UI from slices, USE the `/ui-build-slice-ui` skill first! It will orchestrate all other skills in the correct order. Only use individual skills when you need to regenerate or modify a specific part.
+**IMPORTANT**: Unless stated in a custom prompt, components read directly from the tables provided, not from api-endpoints via HTTP
 
 ---
 
