@@ -223,7 +223,7 @@ const server = createServer(async (req, res) => {
                         if (index == -1) {
                             sliceIndices.slices.push(sliceIndex);
                         } else {
-                            sliceIndices.slices[index] = sliceIndex;
+                            sliceIndices.slices[index] = {...sliceIndices.slices[index], ...sliceIndex};
                         }
                     });
                     writeFileSync(indexFile, JSON.stringify(sliceIndices, null, 2));
