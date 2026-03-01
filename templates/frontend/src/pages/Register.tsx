@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Check, ChevronLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { registerTenant } from "@/lib/api";
+//import { registerTenant } from "@/lib/api";
 import { v4 } from "uuid";
 
 const Register = () => {
@@ -113,11 +113,11 @@ const Register = () => {
       const token = sessionData?.session?.access_token ?? "";
       const tenantId = v4();
 
-      await registerTenant({
+     /* await registerTenant({
         tenantId,
         name: tenantName,
         ownerId: ownerId,
-      }, { token, userId: ownerId, tenantId });
+      }, { token, userId: ownerId, tenantId });*/
 
       toast({
         title: 'Success',
