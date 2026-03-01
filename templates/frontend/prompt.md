@@ -14,16 +14,17 @@ Build React + TypeScript UI components from slice JSON definitions using establi
 7. A slice can define additional prompts as codegen/uiPrompt. any additional prompts defined in backend are hints for the implementation of the slice and have to be taken into account. If you use the additional prompt, add a line in progress.txt
 8. Write a short progress one liner after each step to progress.txt
 9. Analyze and Implement according to the Rest of the instructions in this file, make use of the skills in the skills directory, but also your previsously collected
-   knowledge. Make a list TODO list for what needs to be done. Also make sure to adjust the implementation according to the json definition. 
+   knowledge. Make a list TODO list for what needs to be done. Also make sure to adjust the implementation according to the json definition.
 10. The slice in the json is always true, the code follows what is defined in the json
 11. the slice is only 'Done' if APIs are implemented.
 12. make sure to read the ui-prompt.md in /backend/src/slices/<slice>
-13. Run quality checks ( npm run build, tsc ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
-15. Update the Slice in the index.json to status 'Done' and remove assignment
-16. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
+13. Place the component where it belongs. If you can´t find a place, add a new page with /debug/<page> to showcase the component.
+14. Run quality checks ( npm run build, tsc ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
+16. Update the Slice in the index.json to status 'Done' and remove assignment
+17. If checks pass, commit ALL changes with message: `feat: [Slice Name]` and merge back to main as FF merge ( update
     first )
-17. Append your progress to `progress.txt` after each step in the iteration.
-18. append your new learnings to frontend/AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
+18. Append your progress to `progress.txt` after each step in the iteration.
+19. append your new learnings to frontend/AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
 20. Finish the iteration.
 
 ---
@@ -208,7 +209,7 @@ export function CreateEventDialog({ open, onOpenChange }) {
         if (!form.name) return toast.error("Name required");
         try {
             await createEvent.mutateAsync(form);
-            toast.success("Created");
+            toast.success("Planned");
             onOpenChange(false);
         } catch (err) {
             toast.error(`Error: ${err.message}`);
