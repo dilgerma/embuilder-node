@@ -23,7 +23,8 @@ const App = () => (
                     <Routes>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/auth" element={<Auth/>}/>
-                        <Route path="/" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
+                        {/*<Route path="/" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>*/}
+                        <Route path="/" element={<Dashboard/>}/>
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
                 </BrowserRouter>

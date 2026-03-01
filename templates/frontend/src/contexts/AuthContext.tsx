@@ -21,10 +21,10 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 const fetchAssignedTenant = async (userId: string): Promise<string | null> => {
-  try {
+  /*try {
     const { data, error } = await supabase
-      .from("slice_assigned_restaurants")
-      .select("restaurant_id")
+      .from("tenant_to_user_mapping")
+      .select("tenant_id")
       .eq("owner_id", userId)
       .maybeSingle();
 
@@ -32,11 +32,12 @@ const fetchAssignedTenant = async (userId: string): Promise<string | null> => {
       console.error("Error fetching assigned tenant:", error);
       return null;
     }
-    return data?.restaurant_id ?? null;
+    return data?.tenant_id ?? null;
   } catch (error) {
     console.error("Error fetching assigned tenant:", error);
     return null;
-  }
+  }*/
+    return null
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
