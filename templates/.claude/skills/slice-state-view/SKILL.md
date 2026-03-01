@@ -11,12 +11,6 @@ If the processors-array in the slice json is not empty. Treat this as an AUTOMAT
 
 ## Critical Requirements
 
-### Restaurant ID Requirement
-- **CRITICAL**: ALL database tables MUST have a `restaurant_id` column (snake_case)
-- **CRITICAL**: ALL events MUST have `restaurantId` in their metadata (camelCase)
-- **NEVER** use `locationId` or `location_id` - these are outdated and forbidden
-- This ensures proper multi-tenancy and data isolation
-
 ## Implementation Steps
 
 When creating a state-view slice, you MUST create the following files:

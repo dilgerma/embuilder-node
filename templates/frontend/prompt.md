@@ -77,7 +77,7 @@ Slice C: { groupId: "123", sliceType: "STATE_CHANGE", title: "Cancel Event" }
 ```typescript
 // AuthContext: user, session, restaurantId
 import { useAuth } from "@/contexts/AuthContext";
-const { user, session, restaurantId } = useAuth();
+const { user, session } = useAuth();
 
 // ApiContext: token, restaurantId, userId (auto-injected into headers)
 import { useApiContext } from "@/hooks/useApiContext";
