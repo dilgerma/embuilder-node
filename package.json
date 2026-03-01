@@ -1,6 +1,6 @@
 {
   "name": "@nebulit/embuilder",
-  "version": "0.1.43",
+  "version": "0.1.44",
   "description": "Event-model driven development toolkit for Claude Code",
   "type": "module",
   "bin": {
