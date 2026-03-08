@@ -165,6 +165,10 @@ const server = createServer(async (req, res) => {
                 if (existsSync(indexFile)) {
                     try {
                         sliceIndices = JSON.parse(readFileSync(indexFile, 'utf-8'));
+                        // Validate structure - ensure sliceIndices has a slices array
+                        if (!sliceIndices || typeof sliceIndices !== 'object' || !Array.isArray(sliceIndices.slices)) {
+                            sliceIndices = { slices: [] };
+                        }
                     } catch {
                         sliceIndices = { slices: [] };
                     }

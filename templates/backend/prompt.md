@@ -26,12 +26,10 @@ If a slice is in status 'planned', Even if a slice seems to have been implemente
 13. make sure to write the ui-prompt.md for the ui_worker as defined if defined in the skill
 14. Run quality checks ( npm run build, npm run test ) - Attention - it´s enough to run the tests for the slice. Do not run all tests.
 15. even if the slice is fully implemented, run your test-analyzer skill and provide the code-slice.json file as defined in the skill
-16. if the slice is an automation slice, set status to 'Done'. Otherwise - Update the Slice in the index.json back to status 'Planned' and assign the 'ui-worker'
-17. If checks pass, commit ALL changes with message: `feat: [Slice Name]`.
-18. Append your progress to `progress.txt` after each step in the iteration.
-19. append your new learnings to AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
-20. if the slice status is 'Done', merge back to main.
-21. Finish the iteration.
+16. If checks pass, commit ALL changes with message: `feat: [Slice Name]`.
+17. Set the status to 'Done'. if the slice is an automation slice, remove the assignee. Otherwise assign 'ui_worker'
+18. append your new learnings to AGENTS.md in a compressed form, reusable for future iterations. Only add learnings if they are not already there.
+19. Finish the iteration.
 
 ## Progress Report Format
 
