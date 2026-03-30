@@ -165,10 +165,6 @@ const server = createServer(async (req, res) => {
                 if (existsSync(indexFile)) {
                     try {
                         sliceIndices = JSON.parse(readFileSync(indexFile, 'utf-8'));
-                        // Validate structure - ensure sliceIndices has a slices array
-                        if (!sliceIndices || typeof sliceIndices !== 'object' || !Array.isArray(sliceIndices.slices)) {
-                            sliceIndices = { slices: [] };
-                        }
                     } catch {
                         sliceIndices = { slices: [] };
                     }
@@ -215,19 +211,18 @@ const server = createServer(async (req, res) => {
                             index: slice.index,
                             context: slice.context ?? "default",
                             folder: sliceFolder,
-                            status: slice.status
+                            status: slice.status,
                         };
-
                         // Add group ID to index entry if it belongs to a group
                         if (groupId) {
                             sliceIndex.group = groupId;
                         }
 
-                        const index = sliceIndices.slices.findIndex(it => it.id == slice.id);
-                        if (index == -1) {
+                        const sliceId = sliceIndices.slices.findIndex(it => it.id == slice.id);
+                        if (sliceId == -1) {
                             sliceIndices.slices.push(sliceIndex);
                         } else {
-                            sliceIndices.slices[index] = {...sliceIndices.slices[index], ...sliceIndex};
+                            sliceIndices.slices[sliceId] = {...sliceIndices.slices[sliceId], ...sliceIndex, assigned: undefined};
                         }
                     });
                     writeFileSync(indexFile, JSON.stringify(sliceIndices, null, 2));
