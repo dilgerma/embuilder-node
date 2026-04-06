@@ -160,7 +160,20 @@ const server = createServer(async (req, res) => {
                 console.log(`✅ ${fileName} written to ${ROOT}`);
 
                 // Read or initialize index.json
-                const indexFile = join(SLICES_DIR, 'index.json');
+                const slice = config.slices.find(it => it.title)
+                const baseFolder = join(SLICES_DIR, slice.context ?? "default");
+
+                if (!existsSync(baseFolder)) {
+                    mkdirSync(baseFolder, { recursive: true });
+                }
+                writeFileSync(join(baseFolder, 'config.json'), JSON.stringify(config, null, 2));
+                console.log(`✅ config.json written to ${baseFolder}`);
+
+                const contextName = slice.context ?? "default";
+                writeFileSync(join(SLICES_DIR, 'current_context.json'), JSON.stringify({ name: contextName }, null, 2));
+                console.log(`✅ current_context.json updated with context: ${contextName}`);
+
+                const indexFile = join(baseFolder, 'index.json');
                 let sliceIndices = { slices: [] };
                 if (existsSync(indexFile)) {
                     try {
@@ -185,7 +198,6 @@ const server = createServer(async (req, res) => {
                     }
 
                     config.slices.forEach((slice) => {
-                        const baseFolder = join(SLICES_DIR, slice.context ?? "default");
                         const sliceFolder = slice.title?.replaceAll(" ", "")?.replaceAll("slice:", "")?.toLowerCase();
                         const folder = join(baseFolder, sliceFolder);
 
@@ -226,6 +238,15 @@ const server = createServer(async (req, res) => {
                         }
                     });
                     writeFileSync(indexFile, JSON.stringify(sliceIndices, null, 2));
+
+                    // Write context.json
+                    const contextFile = join(baseFolder, 'context.json');
+                    const contextData = {
+                        name: config.context,
+                        contextPackage: config.codeGen?.contextPackage
+                    };
+                    writeFileSync(contextFile, JSON.stringify(contextData, null, 2));
+                    console.log(`✅ context.json written to ${baseFolder}`);
                 }
 
                 // Write slice images
@@ -258,12 +279,20 @@ const server = createServer(async (req, res) => {
     // ---------------------------------------
     if (pathname === '/api/slice-info' && req.method === 'GET') {
         try {
-            const indexPath = join(SLICES_DIR, 'index.json');
+            const currentContextPath = join(SLICES_DIR, 'current_context.json');
+            let contextName = null;
+            if (existsSync(currentContextPath)) {
+                contextName = JSON.parse(readFileSync(currentContextPath, 'utf-8')).name;
+            }
+            const indexPath = contextName
+                ? join(SLICES_DIR, contextName, 'index.json')
+                : join(SLICES_DIR, 'index.json');
             if (!existsSync(indexPath)) return sendJSON(res, { error: 'index.json not found' }, 404);
             const indexData = JSON.parse(readFileSync(indexPath, 'utf-8'));
             const specificationsMap = new Map();
 
-            const codeFiles = findFilesRecursive(SLICES_DIR, name => name === 'code-slice.json');
+            const searchBase = contextName ? join(SLICES_DIR, contextName) : SLICES_DIR;
+            const codeFiles = findFilesRecursive(searchBase, name => name === 'code-slice.json');
             for (const file of codeFiles) {
                 try {
                     const cs = JSON.parse(readFileSync(file, 'utf-8'));

@@ -10,22 +10,25 @@ import cors from 'cors';
 import {api as replayApi} from "./src/common/routes"
 
 async function startServer() {
-    const routesPattern = join(__dirname, 'src/slices/**/routes{,-*}.@(ts|js)');
+    const slicesBase = join(__dirname, 'dist/src/slices');
+    const routesPattern = join(slicesBase, '**/routes{,-*}.js');
+
     const routeFiles = await glob(routesPattern, {nodir: true});
     console.log('Found route files:', routeFiles);
 
-    const processorPattern = join(__dirname, 'src/slices/**/processor{,-*}.@(ts|js)');
+    const processorPattern = join(slicesBase, '**/processor{,-*}.js');
     const processorFiles = await glob(processorPattern, {nodir: true});
     console.log('Found processor files:', processorFiles);
+
 
     const rootApp: Application = express();
 
     // Configure CORS to allow requests from localhost:8080 and localhost:8081
     rootApp.use(cors({
-        origin: ['http://localhost:8080', 'http://localhost:8081', '*'],
+        origin: ['http://localhost:3000', 'http://localhost:3001', 'https://app.eventmodelers.de', 'https://app.eventmodelers.de/canvas'],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization','x-user-id']
+        allowedHeaders: ['Content-Type', 'Authorization','x-user-id','x-causation-id','x-correlation-id']
     }));
 
     const webApis: WebApiSetup[] = [];
@@ -110,6 +113,11 @@ async function startServer() {
 
     const port = parseInt(process.env.PORT || '3000', 10);
     console.log(`> Ready on port ${port}`);
+
+    rootApp.use((req: Request, _res: Response, next) => {
+        console.log(`[${req.method}] ${req.path}`);
+        next();
+    });
 
     rootApp.use(childApp)
     // Start the main application
